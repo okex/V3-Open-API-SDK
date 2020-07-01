@@ -4,7 +4,7 @@ project(okapi)
 
 # Configure required libraries ...
 if(UNIX) # Darwing or Linux
-    
+
     find_package(Boost REQUIRED COMPONENTS system thread log program_options chrono)
     find_package(Threads REQUIRED)
 
@@ -84,4 +84,5 @@ if (APPLE)
     set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS "-W1, -F/Library/Frameworks")
 else()
     target_link_libraries(${PROJECT_NAME} ${LIBRARIES_SEARCH_PATHS})
+    target_link_libraries(${PROJECT_NAME} "-lz")
 endif()
