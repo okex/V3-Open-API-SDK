@@ -6,7 +6,7 @@
 
     <groupId>com.okcoin.commons</groupId>
     <artifactId>okex-java-sdk-api</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.2-MDVX</version>
 
     <dependencies>
 
