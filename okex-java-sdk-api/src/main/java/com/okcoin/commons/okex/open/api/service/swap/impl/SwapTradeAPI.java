@@ -15,6 +15,10 @@ public interface SwapTradeAPI {
     //批量下单
     @POST("/api/swap/v3/orders")
     Call<String> orders(@Body JSONObject ppOrders);
+
+    @GET("/api/swap/v3/orders/{instrument_id}")
+    Call<String> getSwapOrders(@Path("instrument_id") String instrument_id, @Query("state") String state, @Query("before") String before, @Query("after") String after, @Query("limit") String limit);
+
     //撤单
     @POST("/api/swap/v3/cancel_order/{instrument_id}/{order_id}")
     Call<String> cancelOrderByOrderId(@Path("instrument_id") String instrument_id, @Path("order_id") String order_id);
@@ -72,7 +76,7 @@ public interface SwapTradeAPI {
 
 
     @GET("/api/swap/v3/order_algo/{instrument_id}")
-    Call<String> getSwapOrders(@Path("instrument_id") String instrument_id,
+    Call<String> getSwapAlgoOrders(@Path("instrument_id") String instrument_id,
                                @Query("order_type") String order_type,
                                @Query("status") String status,
                                @Query("algo_id") String algo_id,

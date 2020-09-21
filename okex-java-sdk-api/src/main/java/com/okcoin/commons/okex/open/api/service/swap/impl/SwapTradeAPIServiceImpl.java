@@ -1,14 +1,10 @@
 package com.okcoin.commons.okex.open.api.service.swap.impl;
 
-import com.alibaba.fastjson.JSONObject;
 import com.okcoin.commons.okex.open.api.bean.swap.param.*;
-import com.okcoin.commons.okex.open.api.bean.swap.result.ApiOrderVO;
 import com.okcoin.commons.okex.open.api.client.APIClient;
 import com.okcoin.commons.okex.open.api.config.APIConfiguration;
 import com.okcoin.commons.okex.open.api.service.swap.SwapTradeAPIService;
 import com.okcoin.commons.okex.open.api.utils.JsonUtils;
-
-import java.util.List;
 
 public class SwapTradeAPIServiceImpl implements SwapTradeAPIService {
     private APIClient client;
@@ -48,6 +44,10 @@ public class SwapTradeAPIServiceImpl implements SwapTradeAPIService {
         return this.client.executeSync(this.api.orders(JsonUtils.convertObject(ppOrders, PpOrders.class)));
     }
 
+    @Override
+    public String getSwapOrders(String instrument_id, String state,String before, String after, String limit) {
+        return this.client.executeSync(this.api.getSwapOrders(instrument_id,state,before,after,limit));
+    }
 
 
     /**
@@ -114,8 +114,8 @@ public class SwapTradeAPIServiceImpl implements SwapTradeAPIService {
     }
     //获取委托单列表
     @Override
-    public String getSwapOrders(String instrument_id, String order_type, String status, String algo_id, String before, String after, String limit ) {
-        return this.client.executeSync(this.api.getSwapOrders(instrument_id,order_type,status,algo_id,before,after,limit));
+    public String getSwapAlgoOrders(String instrument_id, String order_type, String status, String algo_id, String before, String after, String limit ) {
+        return this.client.executeSync(this.api.getSwapAlgoOrders(instrument_id,order_type,status,algo_id,before,after,limit));
     }
 
     @Override

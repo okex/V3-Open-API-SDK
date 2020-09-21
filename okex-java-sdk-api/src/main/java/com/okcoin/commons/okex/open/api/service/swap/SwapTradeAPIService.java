@@ -23,10 +23,9 @@ public interface SwapTradeAPIService {
     String orders(PpOrders ppOrders);
 
     /**
-     * 获取订单信息
      * @return
      */
-
+    String getSwapOrders(String instrument_id, String state,String before, String after, String limit);
 
     /**
      * 撤单
@@ -84,7 +83,7 @@ public interface SwapTradeAPIService {
      * @param limit
      * @return
      */
-    String getSwapOrders(String instrument_id,
+    String getSwapAlgoOrders(String instrument_id,
                          String order_type,
                          String status,
                          String algo_id,

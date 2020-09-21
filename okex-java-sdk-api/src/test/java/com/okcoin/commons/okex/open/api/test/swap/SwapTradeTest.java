@@ -1,15 +1,11 @@
 package com.okcoin.commons.okex.open.api.test.swap;
 
 import com.alibaba.fastjson.JSONObject;
-import com.okcoin.commons.okex.open.api.bean.futures.param.CancelAll;
 import com.okcoin.commons.okex.open.api.bean.swap.param.*;
 import com.okcoin.commons.okex.open.api.bean.swap.result.ApiCancelOrderVO;
-import com.okcoin.commons.okex.open.api.bean.swap.result.ApiOrderResultVO;
-import com.okcoin.commons.okex.open.api.bean.swap.result.ApiOrderVO;
 import com.okcoin.commons.okex.open.api.bean.swap.result.OrderCancelResult;
 import com.okcoin.commons.okex.open.api.service.swap.SwapTradeAPIService;
 import com.okcoin.commons.okex.open.api.service.swap.impl.SwapTradeAPIServiceImpl;
-import com.okcoin.commons.okex.open.api.test.spot.SpotOrderAPITest;
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -298,7 +294,7 @@ public class SwapTradeTest extends SwapBaseTest {
     @Test
     public void testGetSwapAlgOrders(){
 //        System.out.println("begin to show the swapAlgpOrders");
-        String jsonObject = tradeAPIService.getSwapOrders("XRP-USDT-SWAP",
+        String jsonObject = tradeAPIService.getSwapAlgoOrders("XRP-USDT-SWAP",
                                                             "1",
                                                             null,"555301223790723072",null,null,null);
         System.out.println(jsonObject);
