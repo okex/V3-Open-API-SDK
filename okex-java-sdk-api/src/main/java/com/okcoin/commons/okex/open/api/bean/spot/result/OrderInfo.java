@@ -223,4 +223,28 @@ public class OrderInfo {
     public void setPrice_avg(String price_avg) {
         this.price_avg = price_avg;
     }
+
+    @Override
+    public String toString() {
+        return "OrderInfo{" +
+                "order_id='" + order_id + '\'' +
+                ", client_oid='" + client_oid + '\'' +
+                ", price='" + price + '\'' +
+                ", notional='" + notional + '\'' +
+                ", size='" + size + '\'' +
+                ", price_avg='" + price_avg + '\'' +
+                ", order_type='" + order_type + '\'' +
+                ", timestamp='" + timestamp + '\'' +
+                ", filled_size='" + filled_size + '\'' +
+                ", state='" + state + '\'' +
+                ", side='" + side + '\'' +
+                ", type='" + type + '\'' +
+                ", instrument_id='" + instrument_id + '\'' +
+                ", filled_notional='" + filled_notional + '\'' +
+                ", fee_currency='" + fee_currency + '\'' +
+                ", fee='" + fee + '\'' +
+                ", rebate_currency='" + rebate_currency + '\'' +
+                ", rebate='" + rebate + '\'' +
+                '}';
+    }
 }
