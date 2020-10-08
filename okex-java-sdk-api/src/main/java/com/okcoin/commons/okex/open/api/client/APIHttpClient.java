@@ -66,7 +66,7 @@ public class APIHttpClient {
         clientBuilder.retryOnConnectionFailure(this.config.isRetryOnConnectionFailure());
         clientBuilder.addInterceptor((Interceptor.Chain chain) -> {
             final Request.Builder requestBuilder = chain.request().newBuilder();
-            final String timestamp = DateUtils.getUnixTimeWithMs();
+            final String timestamp = DateUtils.getUnixTime();
             //打印首行时间戳
             System.out.println("时间戳timestamp={" + timestamp + "}");
 

@@ -38,7 +38,7 @@ public class DateUtils {
     public static String TIME_STYLE_S7 = "yyyy年MM月dd日HH时mm分ss秒";
     public static SimpleDateFormat SDF = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.S'Z'");
 
-    private static DateTimeFormatter RFC3339_MS = new DateTimeFormatterBuilder()
+    private static DateTimeFormatter RFC3339_FORMATTER = new DateTimeFormatterBuilder()
             .parseCaseInsensitive()
             .append(ISO_LOCAL_DATE)
             .appendLiteral('T')
@@ -141,28 +141,6 @@ public class DateUtils {
      * UNIX timestamp ISO 8601 rule eg: 2018-02-03T05:34:14.110Z
      */
     public static String getUnixTime() {
-        StringBuilder nowStr = new StringBuilder(Instant.now().toString());
-        //可以有效解决字符串下标越界的问题
-        return new StringBuilder().append(nowStr.toString()).toString();
-        //return new StringBuilder().append(nowStr.substring(0,nowStr.lastIndexOf("."))).append(nowStr.substring(nowStr.lastIndexOf(".")).substring(0,4)).append(nowStr.substring(nowStr.length()-1)).toString();
-    }
-
-    public static String getUnixTimeWithMs() {
-        DateTimeFormatter RFC3339_FORMATTER = new DateTimeFormatterBuilder()
-                .parseCaseInsensitive()
-                .append(ISO_LOCAL_DATE)
-                .appendLiteral('T')
-                .appendValue(HOUR_OF_DAY, 2)
-                .appendLiteral(':')
-                .appendValue(MINUTE_OF_HOUR, 2)
-                .optionalStart()
-                .appendLiteral(':')
-                .appendValue(SECOND_OF_MINUTE, 2)
-                .appendLiteral('.')
-                .appendValue(MILLI_OF_SECOND, 3)
-                .parseLenient()
-                .appendOffsetId()
-                .parseStrict().toFormatter(Locale.US);
         return ZonedDateTime.ofInstant(Instant.now(), ZoneOffset.UTC).format(RFC3339_FORMATTER);
     }
 
