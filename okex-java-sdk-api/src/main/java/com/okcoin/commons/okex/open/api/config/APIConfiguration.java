@@ -60,6 +60,9 @@ public class APIConfiguration {
      */
     private I18nEnum i18n;
 
+    private String proxyHost;
+    private Integer proxyPort;
+
     public APIConfiguration() {
         this(null);
     }
@@ -156,5 +159,18 @@ public class APIConfiguration {
 
     public void setI18n(I18nEnum i18n) {
         this.i18n = i18n;
+    }
+
+    public String getProxyHost() {
+        return proxyHost;
+    }
+    public void setProxyHost(String host) {
+        this.proxyHost = host;
+    }
+    public Integer getProxyPort() {
+        return proxyPort;
+    }
+    public void setProxyPort(Integer port) {
+        this.proxyPort = port;
     }
 }

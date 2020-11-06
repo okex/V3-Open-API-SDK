@@ -6,15 +6,23 @@ import com.alibaba.fastjson.JSONObject;
 import com.google.common.hash.HashFunction;
 import com.google.common.hash.Hashing;
 import io.netty.bootstrap.Bootstrap;
-import io.netty.channel.*;
+import io.netty.channel.Channel;
+import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelPipeline;
+import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.http.DefaultHttpHeaders;
 import io.netty.handler.codec.http.HttpClientCodec;
 import io.netty.handler.codec.http.HttpObjectAggregator;
-import io.netty.handler.codec.http.websocketx.*;
+import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
+import io.netty.handler.codec.http.websocketx.WebSocketClientHandshaker;
+import io.netty.handler.codec.http.websocketx.WebSocketClientHandshakerFactory;
+import io.netty.handler.codec.http.websocketx.WebSocketFrame;
+import io.netty.handler.codec.http.websocketx.WebSocketVersion;
 import io.netty.handler.codec.http.websocketx.extensions.compression.WebSocketClientCompressionHandler;
+import io.netty.handler.proxy.Socks5ProxyHandler;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
@@ -23,14 +31,14 @@ import io.netty.util.HashedWheelTimer;
 import io.netty.util.Timeout;
 import io.netty.util.Timer;
 import io.netty.util.TimerTask;
-import org.apache.commons.codec.binary.Base64;
-
-import javax.crypto.Mac;
-import javax.crypto.spec.SecretKeySpec;
+import io.netty.util.internal.SocketUtils;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
+import org.apache.commons.codec.binary.Base64;
 
 public class WebSocketClient implements WebSocket {
     private final static HashFunction crc32 = Hashing.crc32();
@@ -38,6 +46,8 @@ public class WebSocketClient implements WebSocket {
     private WebSocketListener listener;
     private String URL = "wss://okexcomreal.bafang.com:8443/ws/v3";
     private Timer timer = new HashedWheelTimer(Executors.defaultThreadFactory());
+    private String proxyHost;
+    private Integer proxyPort;
 
     public WebSocketClient(WebSocketListener listener) {
         this.listener = listener;
@@ -81,6 +91,10 @@ public class WebSocketClient implements WebSocket {
                         @Override
                         protected void initChannel(SocketChannel ch) {
                             ChannelPipeline p = ch.pipeline();
+                            if (proxyHost != null) {
+                                p.addFirst(new Socks5ProxyHandler(SocketUtils.socketAddress(proxyHost, proxyPort)));
+                            }
+
                             if (sslCtx != null) {
                                 p.addLast(sslCtx.newHandler(ch.alloc(), host, port));
                             }
@@ -204,6 +218,16 @@ public class WebSocketClient implements WebSocket {
         return false;
     }
 
+    @Override
+    public void setProxyHost(String host) {
+        this.proxyHost = host;
+    }
+
+    @Override
+    public void setProxyPort(Integer port) {
+        this.proxyPort = port;
+    }
+
     private  void send(String msg){
         WebSocketFrame frame = new TextWebSocketFrame(msg);
         ch.writeAndFlush(frame);
@@ -228,8 +252,12 @@ public class WebSocketClient implements WebSocket {
         TimerTask timerTask = new TimerTask() {
             @Override
             public void run(Timeout timeout) throws Exception {
-                addTask(this);
-                timerTask();
+                try {
+                    addTask(this);
+                    timerTask();
+                } catch (Exception e) {
+                    listener.handleCallbackError(WebSocketClient.this,e);
+                }
             }
         };
         addTask(timerTask);
