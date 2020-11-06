@@ -1,6 +1,5 @@
 package com.okcoin.commons.okex.open.api.service.swap.impl;
 
-import com.alibaba.fastjson.JSONObject;
 import com.okcoin.commons.okex.open.api.bean.swap.param.LevelRateParam;
 import com.okcoin.commons.okex.open.api.client.APIClient;
 import com.okcoin.commons.okex.open.api.config.APIConfiguration;
@@ -166,6 +165,6 @@ public class SwapUserAPIServiceImpl implements SwapUserAPIServive {
 
     @Override
     public String getTradeFee() {
-        return client.executeSync(api.getTradeFee());
+        return client.executeSync(api.getTradeFee("1"));
     }
 }

@@ -2,11 +2,17 @@ package com.okcoin.commons.okex.open.api.service.option.impl;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.okcoin.commons.okex.open.api.bean.option.param.*;
+import com.okcoin.commons.okex.open.api.bean.option.param.AmendDateParam;
+import com.okcoin.commons.okex.open.api.bean.option.param.AmentDate;
+import com.okcoin.commons.okex.open.api.bean.option.param.CancelOrders;
+import com.okcoin.commons.okex.open.api.bean.option.param.OrderDataParam;
+import com.okcoin.commons.okex.open.api.bean.option.param.OrderParam;
 import retrofit2.Call;
-import retrofit2.http.*;
-
-import java.util.List;
+import retrofit2.http.Body;
+import retrofit2.http.GET;
+import retrofit2.http.POST;
+import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface OptionTradeAPI {
 
@@ -90,6 +96,6 @@ public interface OptionTradeAPI {
 
     //获取当前账户交易的手续费率
     @GET("/api/option/v3/trade_fee")
-    Call<JSONObject> getTradeFee();
+    Call<JSONObject> getTradeFee(@Query("category") String category);
 
 }

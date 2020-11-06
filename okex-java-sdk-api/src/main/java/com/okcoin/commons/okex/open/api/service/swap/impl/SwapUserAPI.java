@@ -1,9 +1,12 @@
 package com.okcoin.commons.okex.open.api.service.swap.impl;
 
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import retrofit2.Call;
-import retrofit2.http.*;
+import retrofit2.http.Body;
+import retrofit2.http.GET;
+import retrofit2.http.POST;
+import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface SwapUserAPI {
 
@@ -50,7 +53,7 @@ public interface SwapUserAPI {
     Call<String> getHolds(@Path("instrument_id") String instrument_id);
     //当前账户交易手续等级的费率
     @GET("/api/swap/v3/trade_fee")
-    Call<String> getTradeFee();
+    Call<String> getTradeFee(@Query("category") String category);
 
 
 }

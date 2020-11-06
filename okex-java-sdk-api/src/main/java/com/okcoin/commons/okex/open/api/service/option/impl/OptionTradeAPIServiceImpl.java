@@ -2,13 +2,14 @@ package com.okcoin.commons.okex.open.api.service.option.impl;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.okcoin.commons.okex.open.api.bean.option.param.*;
+import com.okcoin.commons.okex.open.api.bean.option.param.AmendDateParam;
+import com.okcoin.commons.okex.open.api.bean.option.param.AmentDate;
+import com.okcoin.commons.okex.open.api.bean.option.param.CancelOrders;
+import com.okcoin.commons.okex.open.api.bean.option.param.OrderDataParam;
+import com.okcoin.commons.okex.open.api.bean.option.param.OrderParam;
 import com.okcoin.commons.okex.open.api.client.APIClient;
 import com.okcoin.commons.okex.open.api.config.APIConfiguration;
-
 import com.okcoin.commons.okex.open.api.service.option.OptionTradeAPIService;
-
-import java.util.List;
 
 public class OptionTradeAPIServiceImpl implements OptionTradeAPIService {
     private APIClient client;
@@ -97,7 +98,7 @@ public class OptionTradeAPIServiceImpl implements OptionTradeAPIService {
 
     @Override
     public JSONObject getTradeFee() {
-        return this.client.executeSync(this.api.getTradeFee());
+        return this.client.executeSync(this.api.getTradeFee("1"));
     }
 
 }

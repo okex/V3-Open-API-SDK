@@ -2,15 +2,28 @@ package com.okcoin.commons.okex.open.api.service.futures.impl;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.okcoin.commons.okex.open.api.bean.futures.param.AmendDateParam;
+import com.okcoin.commons.okex.open.api.bean.futures.param.AmendOrder;
 import com.okcoin.commons.okex.open.api.bean.futures.param.CancelAll;
-import com.okcoin.commons.okex.open.api.bean.futures.param.*;
-import com.okcoin.commons.okex.open.api.bean.futures.result.*;
+import com.okcoin.commons.okex.open.api.bean.futures.param.CancelOrders;
+import com.okcoin.commons.okex.open.api.bean.futures.param.ChangeLiquiMode;
+import com.okcoin.commons.okex.open.api.bean.futures.param.ChangeMarginMode;
+import com.okcoin.commons.okex.open.api.bean.futures.param.ClosePositions;
+import com.okcoin.commons.okex.open.api.bean.futures.param.FuturesOrderParam;
+import com.okcoin.commons.okex.open.api.bean.futures.param.ModifyFixedMargin;
+import com.okcoin.commons.okex.open.api.bean.futures.param.ModifyMarginParam;
+import com.okcoin.commons.okex.open.api.bean.futures.param.Order;
+import com.okcoin.commons.okex.open.api.bean.futures.param.Orders;
+import com.okcoin.commons.okex.open.api.bean.futures.param.OrdersItem;
+import com.okcoin.commons.okex.open.api.bean.futures.result.CancelFuturesOrdeResult;
+import com.okcoin.commons.okex.open.api.bean.futures.result.CancelFuturesOrder;
+import com.okcoin.commons.okex.open.api.bean.futures.result.FuturesOrderResult;
+import com.okcoin.commons.okex.open.api.bean.futures.result.Holds;
+import com.okcoin.commons.okex.open.api.bean.futures.result.OrderResult;
 import com.okcoin.commons.okex.open.api.client.APIClient;
 import com.okcoin.commons.okex.open.api.config.APIConfiguration;
 import com.okcoin.commons.okex.open.api.service.futures.FuturesTradeAPIService;
 import com.okcoin.commons.okex.open.api.utils.JsonUtils;
-
-import java.util.List;
 
 /**
  * Futures trade api
@@ -190,7 +203,7 @@ public class FuturesTradeAPIServiceImpl implements FuturesTradeAPIService {
 
     @Override
     public JSONObject getTradeFee() {
-        return this.client.executeSync(this.api.getTradeFee());
+        return this.client.executeSync(this.api.getTradeFee("1"));
     }
 
     @Override

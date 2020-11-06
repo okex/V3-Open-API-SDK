@@ -2,13 +2,22 @@ package com.okcoin.commons.okex.open.api.service.futures.impl;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.okcoin.commons.okex.open.api.bean.futures.param.*;
+import com.okcoin.commons.okex.open.api.bean.futures.param.AmendDateParam;
+import com.okcoin.commons.okex.open.api.bean.futures.param.AmendOrder;
+import com.okcoin.commons.okex.open.api.bean.futures.param.FuturesOrderParam;
+import com.okcoin.commons.okex.open.api.bean.futures.param.ModifyFixedMargin;
+import com.okcoin.commons.okex.open.api.bean.futures.param.ModifyMarginParam;
+import com.okcoin.commons.okex.open.api.bean.futures.result.CancelFuturesOrdeResult;
 import com.okcoin.commons.okex.open.api.bean.futures.result.CancelFuturesOrder;
-import com.okcoin.commons.okex.open.api.bean.futures.result.*;
+import com.okcoin.commons.okex.open.api.bean.futures.result.FuturesOrderResult;
+import com.okcoin.commons.okex.open.api.bean.futures.result.Holds;
+import com.okcoin.commons.okex.open.api.bean.futures.result.OrderResult;
 import retrofit2.Call;
-import retrofit2.http.*;
-
-import java.util.List;
+import retrofit2.http.Body;
+import retrofit2.http.GET;
+import retrofit2.http.POST;
+import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 /**
  * Futures trade api
@@ -131,7 +140,7 @@ interface FuturesTradeAPI {
 
     //当前账户交易手续等级的费率
     @GET("/api/futures/v3/trade_fee")
-    Call<JSONObject> getTradeFee();
+    Call<JSONObject> getTradeFee(@Query("category") String category);
 
     @GET("/api/futures/v3/accounts/{instrument_id}/holds")
     Call<Holds> getHolds(@Path("instrument_id") String instrument_id);

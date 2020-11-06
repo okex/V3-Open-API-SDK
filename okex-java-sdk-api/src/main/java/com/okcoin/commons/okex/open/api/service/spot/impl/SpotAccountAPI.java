@@ -3,15 +3,12 @@ package com.okcoin.commons.okex.open.api.service.spot.impl;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.okcoin.commons.okex.open.api.bean.spot.result.Account;
-import com.okcoin.commons.okex.open.api.bean.spot.result.Ledger;
-import com.okcoin.commons.okex.open.api.bean.spot.result.ServerTimeDto;
+import java.util.List;
+import java.util.Map;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
-
-import java.util.List;
-import java.util.Map;
 
 public interface SpotAccountAPI {
 
@@ -59,6 +56,6 @@ public interface SpotAccountAPI {
 
     //当前账户交易手续等级的费率
     @GET("/api/spot/v3/trade_fee")
-    Call<JSONObject> getTradeFee();
+    Call<JSONObject> getTradeFee(@Query("category") String category);
 
 }
