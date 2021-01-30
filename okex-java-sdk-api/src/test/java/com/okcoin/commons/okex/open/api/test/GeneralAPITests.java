@@ -34,14 +34,14 @@ public class GeneralAPITests extends FuturesAPIBaseTests {
         generalAPIService = new GeneralAPIServiceImpl(config);
     }
 
-
+    //获取系统时间戳接口
     @Test
     public void testServerTime() {
          ServerTime time = generalAPIService.getServerTime();
         toResultString(LOG, "ServerTime", time);
     }
 
-    //获取法币汇率借口
+    //获取法币汇率接口
     @Test
     public void testExchangeRate() {
         ExchangeRate exchangeRates = generalAPIService.getExchangeRate();

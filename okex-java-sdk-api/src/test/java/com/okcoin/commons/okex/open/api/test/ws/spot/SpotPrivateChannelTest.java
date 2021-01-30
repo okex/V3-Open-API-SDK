@@ -3,6 +3,7 @@ package com.okcoin.commons.okex.open.api.test.ws.spot;
 import com.okcoin.commons.okex.open.api.test.ws.spot.config.WebSocketClient;
 import com.okcoin.commons.okex.open.api.test.ws.spot.config.WebSocketConfig;
 import com.okcoin.commons.okex.open.api.utils.DateUtils;
+import org.apache.commons.compress.utils.Lists;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.junit.After;
 import org.junit.Before;
@@ -48,6 +49,28 @@ public class SpotPrivateChannelTest {
     }
 
     /**
+     * 用户币币账户频道
+     * Account Channel
+     */
+    @Test
+    public void spotAccountChannel() {
+        if (!webSocketClient.getIsConnect()) {
+            return;
+        }
+        //创建一个list集合，添加要订阅的频道名称
+        final ArrayList<String> list = new ArrayList<>();
+        list.add("spot/account:USDT");
+        webSocketClient.subscribe(list);
+        //为保证测试方法不停，需要让线程延迟
+        try {
+            Thread.sleep(10000000);
+        } catch (final Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    /**
      * 用户杠杆账户频道
      * Margin Account Channel
      */
@@ -59,46 +82,6 @@ public class SpotPrivateChannelTest {
         //创建一个list集合，添加要订阅的频道名称
         final ArrayList<String> list = new ArrayList<>();
         list.add("spot/margin_account:BTC-USDT");
-        webSocketClient.subscribe(list);
-        //为保证测试方法不停，需要让线程延迟
-        try {
-            Thread.sleep(10000000);
-        } catch (final Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * 用户币币账户频道
-     * Account Channel
-     */
-    @Test
-    public void spotAccountChannel() {
-        if (!webSocketClient.getIsConnect()) {
-            return;
-        }
-        //创建一个list集合，添加要订阅的频道名称
-        final ArrayList<String> list = new ArrayList<>();
-        list.add("spot/account:OKB");
-        //list.add("spot/account:XRP");
-        webSocketClient.subscribe(list);
-        //为保证测试方法不停，需要让线程延迟
-        try {
-            Thread.sleep(10000000);
-        } catch (final Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * 用户交易频道
-     * Order Channel
-     */
-    @Test
-    public void orderChannel() {
-        //创建一个list集合，添加要订阅的频道名称
-        final ArrayList<String> list = new ArrayList<>();
-        list.add("spot/order:XRP-USDT");
         webSocketClient.subscribe(list);
         //为保证测试方法不停，需要让线程延迟
         try {
@@ -125,4 +108,23 @@ public class SpotPrivateChannelTest {
             e.printStackTrace();
         }
     }
+
+    /**
+     * 用户交易频道
+     * Order Channel
+     */
+    @Test
+    public void orderChannel() {
+        //创建一个list集合，添加要订阅的频道名称
+        final ArrayList<String> list = new ArrayList<>();
+        list.add("spot/order:EOS-USDT");
+        webSocketClient.subscribe(list);
+        //为保证测试方法不停，需要让线程延迟
+        try {
+            Thread.sleep(10000000);
+        } catch (final Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }

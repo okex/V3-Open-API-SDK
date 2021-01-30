@@ -2,118 +2,50 @@ package com.okcoin.commons.okex.open.api.service.swap;
 
 
 public interface SwapMarketAPIService {
-    /**
-     * 获取可用合约的列表。
-     *
-     * @return
-     */
+
+    //公共-获取合约信息
     String getContractsApi();
 
-    /**
-     * 获取合约的深度列表。
-     *
-     * @param instrument_id
-     * @param size
-     * @return
-     */
-    String getDepthApi(String instrument_id, String size,String depth);
+    //公共-获取深度数据
+    String getDepthApi(String instrument_id, String depth, String size);
 
-    /**
-     * 获取平台全部合约的最新成交价、买一价、卖一价和24交易量。
-     *
-     * @return
-     */
+    //公共-获取全部ticker信息
     String getTickersApi();
 
-    /**
-     * 获取合约的最新成交价、买一价、卖一价和24交易量。
-     *
-     * @param instrument_id
-     * @return
-     */
+    //公共-获取某个ticker信息
     String getTickerApi(String instrument_id);
 
-    /**
-     * 获取合约的成交记录。
-     * @param instrument_id
-     * @param before
-     * @param after
-     * @param limit
-     * @return
-     */
-    String getTradesApi(String instrument_id, String before, String after, String limit);
+    //公共-获取成交数据
+    String getTradesApi(String instrument_id, String after, String before, String limit);
 
-    /**
-     * 获取合约的K线数据。
-     * @param instrument_id
-     * @param start
-     * @param end
-     * @param granularity
-     * @return
-     */
+    //公共-获取K线数据
     String getCandlesApi(String instrument_id, String start, String end, String granularity);
 
-
-    String getHistoryCandlesApi(String instrument_id, String start, String end, String granularity);
-
-    /**
-     * 获取币种指数。
-     * @param instrument_id
-     * @return
-     */
+    //公共-获取指数信息
     String getIndexApi(String instrument_id);
 
-    /**
-     * 获取法币汇率。
-     * @return
-     */
+    //公共-获取法币汇率
     String getRateApi();
 
-    /**
-     * 获取合约整个平台的总持仓量。
-     * @param instrument_id
-     * @return
-     */
+    //公共-获取平台总持仓量
     String getOpenInterestApi(String instrument_id);
 
-    /**
-     * 获取合约当前开仓的最高买价和最低卖价。
-     * @param instrument_id
-     * @return
-     */
+    //公共-获取当前限价
     String getPriceLimitApi(String instrument_id);
 
-    /**
-     * 获取合约爆仓单。
-     * @param instrument_id
-     * @param status
-     * @param from
-     * @param to
-     * @param limit
-     * @return
-     */
-    String getLiquidationApi(String instrument_id, String status, String from, String to, String limit);
+    //公共-获取强平单
+    String getLiquidationApi(String instrument_id, String status, String limit, String from, String to);
 
-    /**
-     * 获取合约下一次的结算时间。
-     * @param instrument_id
-     * @return
-     */
+    //公共-获取合约资金费率
     String getFundingTimeApi(String instrument_id);
 
-    /**
-     * 获取合约历史资金费率
-     * @param instrument_id
-     * @param limit
-     * @return
-     */
-    String getHistoricalFundingRateApi(String instrument_id,String limit);
-
-    /**
-     * 获取合约标记价格
-     * @return
-     */
+    //公共-获取合约标记价格
     String getMarkPriceApi(String instrument_id);
 
+    //公共-获取合约历史资金费率
+    String getHistoricalFundingRateApi(String instrument_id,String limit);
+
+    //公共-获取历史K线数据
+    String getHistoryCandlesApi(String instrument_id, String start, String end, String granularity, String limit);
 
 }

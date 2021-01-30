@@ -10,7 +10,6 @@ public class IndexAPIBaseTest extends BaseTests {
 
         config.setEndpoint("https://www.okex.com/");
 
-
         config.setApiKey("");
         config.setSecretKey("");
         config.setPassphrase("");

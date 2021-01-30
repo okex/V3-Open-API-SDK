@@ -21,9 +21,24 @@ public class Instruments {
     private String is_inverse;
     private String contract_val_currency;
     private String trade_increment;
+    private String category;
+    private String underlying_index;
 
+    public String getCategory() {
+        return category;
+    }
 
+    public void setCategory(String category) {
+        this.category = category;
+    }
 
+    public String getUnderlying_index() {
+        return underlying_index;
+    }
+
+    public void setUnderlying_index(String underlying_index) {
+        this.underlying_index = underlying_index;
+    }
 
     public String getInstrument_id() {
         return instrument_id;

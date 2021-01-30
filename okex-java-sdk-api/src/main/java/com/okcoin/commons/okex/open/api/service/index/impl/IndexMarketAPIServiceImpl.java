@@ -13,8 +13,10 @@ public class IndexMarketAPIServiceImpl implements IndexMarketAPIService {
         this.indexMarketAPI = this.client.createService(IndexMarketAPI.class);
     }
 
+    //公共-获取指数成分
     @Override
     public String getIndex(String instrument_id) {
         return this.client.executeSync(this.indexMarketAPI.getIndex(instrument_id));
     }
+
 }

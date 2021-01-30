@@ -10,130 +10,59 @@ import java.util.List;
 import java.util.Map;
 
 public interface SpotOrderAPIServive {
-    /**
-     * 添加订单
-     *
-     * @param order
-     * @return
-     */
+
+    //下单
     OrderResult addOrder(PlaceOrderParam order);
 
-    /**
-     * 批量下单
-     *
-     * @param order
-     * @return
-     */
+    //批量下单
     Map<String, List<OrderResult>> addOrders(List<PlaceOrderParam> order);
 
-    /**
-     * 取消单个订单 delete协议
-     *
-     *  @param order
-     * @param order_id
-     */
+    //撤销指定订单(通过order_id进行撤单)
     OrderResult cancleOrderByOrderId(final PlaceOrderParam order, String order_id);
 
-    /**
-     * 取消单个订单 post协议
-     *
-     * @param order
-     * @param order_id
-     */
-    OrderResult cancleOrderByOrderId_post(final PlaceOrderParam order, String order_id);
-    //通过client_oid进行撤单
+    //撤销指定订单(通过client_oid进行撤单)
     OrderResult cancleOrderByClientOid(final PlaceOrderParam order, String client_oid);
 
-    /**
-     * 批量取消订单 delete协议
-     *
-     * @param cancleOrders
-     * @return
-     */
-    Map<String, BatchOrdersResult> cancleOrders(final List<OrderParamDto> cancleOrders);
+    //批量撤销订单(通过order_id)
+    Map<String, Object> batchCancleOrdersByOrderId(final List<OrderParamDto> cancleOrders);
 
-    /**
-     * 批量取消订单 post协议
-     *
-     * @param cancleOrders
-     * @return
-     */
-    Map<String, Object> cancleOrders_post(final List<OrderParamDto> cancleOrders);
+    //批量撤销订单(通过client_oid)
+    Map<String, Object> batchCancleOrdersByClientOid(List<OrderParamDto> orderParamDto);
 
-    Map<String, Object> batchCancleOrders_2(final List<OrderParamDto> cancleOrders);
+    //修改订单(通过order_id)
+    JSONObject amendOrderByOrderId(String instrument_id,  AmendParam amendParam);
 
-    Map<String, Object> batch_orderCle(List<OrderParamDto> orderParamDto);
+    //修改订单(通过Client_oid)
+    JSONObject amendOrderByClientOid(String instrument_id,  AmendParam amendParam);
 
-    /**
-     * 单个订单
-     * @param instrument_id
-     * @param order_id
-     * @return
-     */
-    OrderInfo getOrderByOrderId(String instrument_id, String order_id);
-    OrderInfo getOrderByClientOid(String instrument_id, String client_oid);
+    //批量修改订单(通过order_id)
+    JSONObject batchAmendOrderByOrderId(List<AmendParam> amendParam);
 
-    /**
-     * 订单列表
-     *
-     * @param instrument_id
-     * @param state
-     * @param after
-     * @param before
-     * @param limit
-     * @return
-     */
+    //批量修改订单(通过Client_oid)
+    JSONObject batchAmendOrdersByClientOid(List<AmendParam> amendParam);
+
+    //获取订单列表
     List<OrderInfo> getOrders(String instrument_id, String state, String after, String before, String limit);
 
-    /**
-     * 订单列表
-     *
-     * @param before
-     * @param after
-     * @param limit
-     * @return
-     */
-    List<PendingOrdersInfo> getPendingOrders(String before, String after, String limit, String instrument_id);
+    //获取所有未成交订单
+    List<PendingOrdersInfo> getPendingOrders(String instrument_id, String after, String before, String limit);
 
-    /**
-     * 账单列表
-     *
-     * @param order_id
-     * @param instrument_id
-     * @param before
-     * @param after
-     * @param limit
-     * @return
-     */
-    List<Fills> getFills(String order_id, String instrument_id, String before, String after, String limit);
+    //获取订单信息(通过order_id)
+    JSONObject getOrderByOrderId(String instrument_id, String order_id);
 
-    /**
-     * 委托下单
-     * @param order
-     * @return
-     */
+    //获取订单信息(通过client_oid)
+    JSONObject getOrderByClientOid(String instrument_id, String client_oid);
+
+    //获取成交明细
+    List<Fills> getFills(String order_id, String instrument_id, String after, String before, String limit);
+
+    //委托策略下单
     OrderAlgoResult addorder_algo(@Body OrderAlgoParam order);
 
-    /**
-     * 委托策略撤单
-     * @param cancelAlgoParam
-     * @return
-     */
+    //委托策略撤单
     CancelAlgoResult cancelOrder_algo(@Body CancelAlgoParam cancelAlgoParam);
 
-    /**
-     * 查询委托订单
-     * @param instrument_id
-     * @param order_type
-     * @param status
-     * @param algo_id
-     * @param before
-     * @param after
-     * @param limit
-     * @return
-     */
-    String  getAlgoOrder(String instrument_id, String order_type, String status, String algo_id, String before, String after, String limit);
-
-
+    //获取委托单列表
+    String  getAlgoOrder(String instrument_id, String order_type, String status, String algo_ids, String before, String after, String limit);
 
 }

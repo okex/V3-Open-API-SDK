@@ -6,13 +6,13 @@
 
     <groupId>com.okcoin.commons</groupId>
     <artifactId>okex-java-sdk-api</artifactId>
-    <version>1.0.2-MDVX-SNAPSHOT</version>
+    <version>1.0.4-MDVX-SNAPSHOT</version>
 
     <dependencies>
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-all</artifactId>
-            <version>4.1.56.Final</version>
+            <version>4.1.58.Final</version>
         </dependency>
         <dependency>
             <groupId>com.squareup.okhttp3</groupId>

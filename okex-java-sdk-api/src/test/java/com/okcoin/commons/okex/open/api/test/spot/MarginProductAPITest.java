@@ -18,12 +18,9 @@ public class MarginProductAPITest extends SpotAPIBaseTests{
     }
 
     /**
-     *公共-获取标记价格
-     * 获取现货杠杆标记价格。此接口为公共接口，不需要身份验证。
-     * 限速规则：20次/2s
+     * 公共-获取标记价格
      * GET/api/margin/v3/instruments/<instrument_id>/mark_price
-     *
-     * **/
+     */
     @Test
     public void testGetMarginMarkPrice(){
         final String markPrice = this.marginOrderAPIService.getMarginMarkPrice("BTC-USDT");

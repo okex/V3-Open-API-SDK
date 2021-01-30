@@ -87,11 +87,17 @@ public class OrderBookDiffer {
 
                 //价格相等时候
                 if (compare == 0) {
-                    if (!snapshotBookItem.equals(currentBookItem)) {
+                    /*if (!snapshotBookItem.equals(currentBookItem)) {
                         if(!"0".equals(snapshotBookItem.getSize().toString())){
                             diff.add(snapshotBookItem);
                         }
+                    }*/
+
+                    if(!"0".equals(snapshotBookItem.getSize().toString())){
+                        diff.add(snapshotBookItem);
                     }
+
+
                     if (currentIter.hasNext() && snapshotIter.hasNext()) {
                         currentBookItem = currentIter.next();
                         snapshotBookItem = snapshotIter.next();

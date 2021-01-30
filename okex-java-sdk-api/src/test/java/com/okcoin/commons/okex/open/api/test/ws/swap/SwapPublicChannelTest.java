@@ -23,11 +23,11 @@ public class SwapPublicChannelTest {
     @After
     public void close() {
         System.out.println(Instant.now().toString() + " close connect!");
-        webSocketClient.closeConnection();
+        WebSocketClient.closeConnection();
     }
 
     /**
-     * 公共-ticker频道
+     * 公共-Ticker频道
      * Ticker Channel
      */
     @Test
@@ -36,7 +36,7 @@ public class SwapPublicChannelTest {
         ArrayList<String> channel = Lists.newArrayList();
         channel.add("swap/ticker:ETH-USD-SWAP");
         //调用订阅方法
-        webSocketClient.subscribe(channel);
+        WebSocketClient.subscribe(channel);
         //为保证测试方法不停，需要让线程延迟
         try {
             Thread.sleep(10000000);
@@ -67,10 +67,10 @@ public class SwapPublicChannelTest {
         ArrayList<String> channel = Lists.newArrayList();
         channel.add("swap/candle60s:BTC-USD-SWAP");
         //调用订阅方法
-        webSocketClient.subscribe(channel);
+        WebSocketClient.subscribe(channel);
         //为保证测试方法不停，需要让线程延迟
         try {
-            Thread.sleep(10000000);
+            Thread.sleep(100000000);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -85,25 +85,27 @@ public class SwapPublicChannelTest {
         //添加订阅频道
         ArrayList<String> channel = Lists.newArrayList();
         channel.add("swap/trade:BTC-USD-SWAP");
-        channel.add("swap/ticker:BTC-USD-SWAP");
         //调用订阅方法
-        webSocketClient.subscribe(channel);
+        WebSocketClient.subscribe(channel);
         //为保证测试方法不停，需要让线程延迟
         try {
-            Thread.sleep(10000000);
+            Thread.sleep(100000000);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    //公共资金费率频道
+    /**
+     * 公共-资金费率频道
+     * funding_rate Channel
+     */
     @Test
     public void fundChannel() {
         //添加订阅频道
         ArrayList<String> channel = Lists.newArrayList();
         channel.add("swap/funding_rate:EOS-USDT-SWAP");
         //调用订阅方法
-        webSocketClient.subscribe(channel);
+        WebSocketClient.subscribe(channel);
         //为保证测试方法不停，需要让线程延迟
         try {
             Thread.sleep(10000000);
@@ -122,7 +124,7 @@ public class SwapPublicChannelTest {
         ArrayList<String> channel = Lists.newArrayList();
         channel.add("swap/price_range:BTC-USD-SWAP");
         //调用订阅方法
-        webSocketClient.subscribe(channel);
+        WebSocketClient.subscribe(channel);
         //为保证测试方法不停，需要让线程延迟
         try {
             Thread.sleep(10000000);
@@ -132,7 +134,7 @@ public class SwapPublicChannelTest {
     }
 
     /**
-     * 公共-5档深度
+     * 公共-5档深度频道
      * Depth5 Channel
      */
     @Test
@@ -141,7 +143,7 @@ public class SwapPublicChannelTest {
         ArrayList<String> channel = Lists.newArrayList();
         channel.add("swap/depth5:BTC-USD-SWAP");
         //调用订阅方法
-        webSocketClient.subscribe(channel);
+        WebSocketClient.subscribe(channel);
         //为保证测试方法不停，需要让线程延迟
         try {
             Thread.sleep(10000000);
@@ -162,7 +164,7 @@ public class SwapPublicChannelTest {
         channel.add("swap/depth:BTC-USDT-SWAP");
 //        channel.add("swap/depth:XRP-USD-SWAP");
         //调用订阅方法
-        webSocketClient.subscribe(channel);
+        WebSocketClient.subscribe(channel);
         //为保证测试方法不停，需要让线程延迟
         try {
             Thread.sleep(10000000);
@@ -180,9 +182,9 @@ public class SwapPublicChannelTest {
     public void allDepthChannel() {
         //添加订阅频道
         ArrayList<String> channel = Lists.newArrayList();
-        channel.add("swap/depth_l2_tbt:BTC-USDT-SWAP");
+        channel.add("swap/depth_l2_tbt:SUN-USDT-SWAP");
         //调用订阅方法
-        webSocketClient.subscribe(channel);
+        WebSocketClient.subscribe(channel);
         //为保证测试方法不停，需要让线程延迟
         try {
             Thread.sleep(10000000);
@@ -192,7 +194,7 @@ public class SwapPublicChannelTest {
     }
 
     /**
-     * 标记价格频道
+     * 公共-标记价格频道
      * markPrice Channel
      */
     @Test
@@ -201,7 +203,7 @@ public class SwapPublicChannelTest {
         ArrayList<String> channel = Lists.newArrayList();
         channel.add("swap/mark_price:BTC-USD-SWAP");
         //调用订阅方法
-        webSocketClient.subscribe(channel);
+        WebSocketClient.subscribe(channel);
         //为保证测试方法不停，需要让线程延迟
         try {
             Thread.sleep(10000000);
@@ -210,15 +212,15 @@ public class SwapPublicChannelTest {
         }
     }
 
-
-
-
     //取消订阅
     @Test
     public void unsubscribeChannel() {
         ArrayList<String> list = Lists.newArrayList();
         //添加要取消订阅的频道名
         list.add("swap/candle60s:BTC-USD-SWAP");
+        //订阅
+        webSocketClient.subscribe(list);
+        //取消订阅
         webSocketClient.unsubscribe(list);
         //为保证收到服务端返回的消息，需要让线程延迟
         try {

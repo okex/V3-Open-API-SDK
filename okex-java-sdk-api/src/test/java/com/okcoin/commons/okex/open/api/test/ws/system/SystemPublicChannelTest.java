@@ -27,10 +27,13 @@ public class SystemPublicChannelTest {
     @After
     public void close() {
         System.out.println(Instant.now().toString() + " close connect!");
-        webSocketClient.closeConnection();
+        WebSocketClient.closeConnection();
     }
 
-    /*获取系统升级状态*/
+    /**
+     * 获取系统升级状态
+     * status channel
+     */
     @Test
     public void systemStatusChannel() {
         //添加订阅频道
@@ -38,7 +41,7 @@ public class SystemPublicChannelTest {
         channel.add("system/status");
 
         //调用订阅方法
-        webSocketClient.subscribe(channel);
+        WebSocketClient.subscribe(channel);
         //为保证测试方法不停，需要让线程延迟
         try {
             Thread.sleep(10000000);

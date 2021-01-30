@@ -81,6 +81,61 @@ public class OrderAlgoParam {
      */
     private String time_interval;
 
+    private String tp_trigger_price;
+    private String tp_price;
+    private String tp_trigger_type;
+    private String sl_trigger_type;
+    private String sl_trigger_price;
+    private String sl_price;
+
+    public String getTp_trigger_price() {
+        return tp_trigger_price;
+    }
+
+    public void setTp_trigger_price(String tp_trigger_price) {
+        this.tp_trigger_price = tp_trigger_price;
+    }
+
+    public String getTp_price() {
+        return tp_price;
+    }
+
+    public void setTp_price(String tp_price) {
+        this.tp_price = tp_price;
+    }
+
+    public String getTp_trigger_type() {
+        return tp_trigger_type;
+    }
+
+    public void setTp_trigger_type(String tp_trigger_type) {
+        this.tp_trigger_type = tp_trigger_type;
+    }
+
+    public String getSl_trigger_type() {
+        return sl_trigger_type;
+    }
+
+    public void setSl_trigger_type(String sl_trigger_type) {
+        this.sl_trigger_type = sl_trigger_type;
+    }
+
+    public String getSl_trigger_price() {
+        return sl_trigger_price;
+    }
+
+    public void setSl_trigger_price(String sl_trigger_price) {
+        this.sl_trigger_price = sl_trigger_price;
+    }
+
+    public String getSl_price() {
+        return sl_price;
+    }
+
+    public void setSl_price(String sl_price) {
+        this.sl_price = sl_price;
+    }
+
     public List<String> getAlgo_ids() {
         return algo_ids;
     }

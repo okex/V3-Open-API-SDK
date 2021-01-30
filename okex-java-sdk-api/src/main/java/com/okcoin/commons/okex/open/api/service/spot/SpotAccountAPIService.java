@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.okcoin.commons.okex.open.api.bean.spot.result.Account;
 import com.okcoin.commons.okex.open.api.bean.spot.result.Ledger;
 import com.okcoin.commons.okex.open.api.bean.spot.result.ServerTimeDto;
+import retrofit2.http.Query;
 
 import java.util.List;
 import java.util.Map;
@@ -14,42 +15,16 @@ import java.util.Map;
  */
 public interface SpotAccountAPIService {
 
-    /**
-     * 挖矿相关数据
-     *
-     * @return
-     */
-    Map<String, Object> getMiningData();
-
-
-    /**
-     * 账户资产列表
-     *
-     * @return
-     */
+    //币币账户信息
     List<Account> getAccounts();
 
-    /**
-     * 币币账单流水
-     * @param currency
-     * @param before
-     * @param after
-     * @param limit
-     * @param type
-     * @param
-     * @return
-     */
-    JSONArray getLedgersByCurrency(String currency, String before, String after, String limit,String type);
-
-    /**
-     * 单币资产
-     *
-     * @param currency
-     * @return
-     */
+    //单一币种账户信息
     Account getAccountByCurrency(final String currency);
 
-    JSONObject getTradeFee();
+    //账单流水查询
+    JSONArray getLedgersByCurrency(String currency, String before, String after, String limit,String type);
 
+    //获取当前账户费率
+    JSONObject getTradeFee(String category, String instrument_id);
 
 }

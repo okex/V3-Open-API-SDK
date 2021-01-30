@@ -14,101 +14,41 @@ import java.util.Map;
  */
 public interface MarginAccountAPIService {
 
-    /**
-     * 全部杠杆资产
-     *
-     * @return
-     */
+    //币币杠杆账户信息
     List<Map<String, Object>> getAccounts();
 
-    /**
-     * 单个币对杠杆账号资产
-     *
-     * @param instrument_id
-     * @return
-     */
-    Map<String, Object> getAccountsByProductId(@Path("instrument_id") final String instrument_id);
+    //单一币对账户信息
+    Map<String, Object> getAccountsByInstrumentId(final String instrument_id);
 
-    /**
-     * 杠杆账单明细
-     *
-     * @param instrument_id
-     * @param type
-     * @param before
-     * @param after
-     * @param limit
-     * @return
-     */
-    List<UserMarginBillDto> getLedger(@Path("instrument_id") final String instrument_id,
-                                      @Query("type") final String type,
-                                      @Query("before") final String before,
-                                      @Query("after") final String after,
-                                      @Query("limit") String limit);
+    //账单流水查询
+    List<UserMarginBillDto> getLedger(final String instrument_id, final String after, final String before, String limit, final String type);
 
-    /**
-     * 全部币对配置
-     *
-     * @return
-     */
+    //杠杆配置信息
     List<Map<String, Object>> getAvailability();
-    /**
-     * 单个币对配置
-     *
-     * @param instrument_id
-     * @return
-     */
-    List<Map<String, Object>> getAvailabilityByProductId(@Path("instrument_id") final String instrument_id);
 
-    /**
-     * 全部借币历史
-     *
-     * @param status
-     * @param before
-     * @param after
-     * @param limit
-     * @return
-     */
-    List<MarginBorrowOrderDto> getBorrowedAccounts(
-            @Query("status") final String status,
-            @Query("before") final String before,
-            @Query("after") final String after,
-            @Query("limit") String limit);
+    //某个杠杆配置信息
+    List<Map<String, Object>> getAvailabilityByInstrumentId(final String instrument_id);
 
-    /**
-     * 单个币对借币历史
-     * @param status
-     * @param before
-     * @param after
-     * @param limit
-     * @param instrument_id
-     * @return
-     */
-    List<MarginBorrowOrderDto> getBorrowedAccountsByProductId(@Path("instrument_id") final String instrument_id,
-                                                              @Query("before") final String before,
-                                                              @Query("after") final String after,
-                                                              @Query("limit") final String limit,
-                                                              @Query("status") final String status);
+    //获取借币记录
+    List<MarginBorrowOrderDto> getBorrowedAccounts(final String status, final String after, final String before, String limit);
 
-    /**
-     * 借币
-     *
-     * @param order
-     * @return
-     */
-    BorrowResult borrow_1(BorrowRequestDto order);
+    //某币对借币记录
+    List<MarginBorrowOrderDto> getBorrowedAccountsByInstrumentId(final String instrument_id,
+                                                              final String status,
+                                                              final String after,
+                                                              final String before,
+                                                              final String limit);
 
-    /**
-     * 还币
-     *
-     * @param order
-     * @return
-     */
-    RepaymentResult repayment_1(RepaymentRequestDto order);
+    //借币
+    BorrowResult borrow(BorrowRequestDto order);
 
-    //设置杠杆倍数
-    JSONObject setLeverage(String instrument_id, MarginLeverage leverage);
+    //还币
+    RepaymentResult repayment(RepaymentRequestDto order);
 
     //获取杠杆倍数
     JSONObject getLeverage(String leverage);
+
+    //设置杠杆倍数
+    JSONObject setLeverage(String instrument_id, MarginLeverage leverage);
 
 }

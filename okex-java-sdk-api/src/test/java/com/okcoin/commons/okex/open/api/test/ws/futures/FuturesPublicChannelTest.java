@@ -33,12 +33,11 @@ public class FuturesPublicChannelTest {
     @After
     public void close() {
         System.out.println(Instant.now().toString() + " close connect!");
-        webSocketClient.closeConnection();
+        WebSocketClient.closeConnection();
     }
 
-
     /**
-     * 公共-全量合约信息
+     * 公共-全量合约信息频道
      * Ticker Channel
      */
     @Test
@@ -46,9 +45,8 @@ public class FuturesPublicChannelTest {
         //添加订阅频道
         ArrayList<String> channel = Lists.newArrayList();
         channel.add("futures/instruments");
-
         //调用订阅方法
-        webSocketClient.subscribe(channel);
+        WebSocketClient.subscribe(channel);
         //为保证测试方法不停，需要让线程延迟
         try {
             Thread.sleep(10000000);
@@ -57,18 +55,17 @@ public class FuturesPublicChannelTest {
         }
     }
 
-
     /**
-     * 公共-ticker频道
+     * 公共-Ticker频道
      * Ticker Channel
      */
     @Test
     public void tickerChannel() {
         //添加订阅频道
         ArrayList<String> channel = Lists.newArrayList();
-        channel.add("futures/ticker:MNBTC-USDT-200925");
+        channel.add("futures/ticker:BTC-USDT-201225");
         //调用订阅方法
-        webSocketClient.subscribe(channel);
+        WebSocketClient.subscribe(channel);
         //为保证测试方法不停，需要让线程延迟
         try {
             Thread.sleep(10000000);
@@ -97,9 +94,9 @@ public class FuturesPublicChannelTest {
     public void klineChannel() {
         //添加订阅频道
         ArrayList<String> channel = Lists.newArrayList();
-        channel.add("futures/candle60s:BTC-USD-200925");
+        channel.add("futures/ticker:BTC-USDT-201225");
         //调用订阅方法
-        webSocketClient.subscribe(channel);
+        WebSocketClient.subscribe(channel);
         //为保证测试方法不停，需要让线程延迟
         try {
             Thread.sleep(10000000);
@@ -116,10 +113,9 @@ public class FuturesPublicChannelTest {
     public void tradeChannel() {
         //添加订阅频道
         ArrayList<String> channel = Lists.newArrayList();
-
-        channel.add("futures/trade:EOS-USDT-200515");
+        channel.add("futures/trade:EOS-USDT-201225");
         //调用订阅方法
-        webSocketClient.subscribe(channel);
+        WebSocketClient.subscribe(channel);
         //为保证测试方法不停，需要让线程延迟
         try {
             Thread.sleep(10000000);
@@ -136,9 +132,9 @@ public class FuturesPublicChannelTest {
     public void estimatedPriceChannel() {
         //添加订阅频道
         ArrayList<String> channel = Lists.newArrayList();
-        channel.add("futures/estimated_price:BTC-USD-200925");
+        channel.add("futures/estimated_price:BTC-USD-201225");
         //调用订阅方法
-        webSocketClient.subscribe(channel);
+        WebSocketClient.subscribe(channel);
         //为保证测试方法不停，需要让线程延迟
         try {
             Thread.sleep(10000000);
@@ -155,9 +151,9 @@ public class FuturesPublicChannelTest {
     public void priceRangeChannel() {
         //添加订阅频道
         ArrayList<String> channel = Lists.newArrayList();
-        channel.add("futures/price_range:BTC-USDT-200925");
+        channel.add("futures/price_range:BTC-USDT-201225");
         //调用订阅方法
-        webSocketClient.subscribe(channel);
+        WebSocketClient.subscribe(channel);
         //为保证测试方法不停，需要让线程延迟
         try {
             Thread.sleep(10000000);
@@ -167,16 +163,16 @@ public class FuturesPublicChannelTest {
     }
 
     /**
-     * 公共-5档深度
+     * 公共-5档深度频道
      * Depth5 Channel
      */
     @Test
     public void depth5Channel() {
         //添加订阅频道
         ArrayList<String> channel = Lists.newArrayList();
-        channel.add("futures/depth5:BTC-USD-200925");
+        channel.add("futures/depth5:BTC-USD-201225");
         //调用订阅方法
-        webSocketClient.subscribe(channel);
+        WebSocketClient.subscribe(channel);
         //为保证测试方法不停，需要让线程延迟
         try {
             Thread.sleep(10000000);
@@ -186,7 +182,7 @@ public class FuturesPublicChannelTest {
     }
 
     /**
-     * 公共-400档深度
+     * 公共-400档深度频道
      * Depth Channel
      * 首次返回400档，后续为增量
      */
@@ -195,11 +191,9 @@ public class FuturesPublicChannelTest {
         //添加订阅频道
         ArrayList<String> channel = Lists.newArrayList();
         //400档位深度校验
-//        channel.add("futures/depth:BCH-USD-200925");
-        channel.add("futures/depth:BTC-USD-200925");
-
+        channel.add("futures/depth:BTC-USD-201225");
         //调用订阅方法
-        webSocketClient.subscribe(channel);
+        WebSocketClient.subscribe(channel);
         //为保证测试方法不停，需要让线程延迟
         try {
             Thread.sleep(100000000);
@@ -208,14 +202,18 @@ public class FuturesPublicChannelTest {
         }
     }
 
-    //公共-400档增量数据频道
+    /**
+     * 公共-400档增量数据频道
+     *  Depth Channel
+     * 首次返回400档，后续为增量
+     */
     @Test
     public void depth12Channel() {
         //添加订阅频道
         ArrayList<String> channel = Lists.newArrayList();
-        channel.add("futures/depth_l2_tbt:BTC-USD-200925");
+        channel.add("futures/depth_l2_tbt:BTC-USD-201225");
         //调用订阅方法
-        webSocketClient.subscribe(channel);
+        WebSocketClient.subscribe(channel);
         //为保证测试方法不停，需要让线程延迟
         try {
             Thread.sleep(10000000);
@@ -232,9 +230,9 @@ public class FuturesPublicChannelTest {
     public void Channel() {
         //添加订阅频道
         ArrayList<String> channel = Lists.newArrayList();
-        channel.add("futures/mark_price:BTC-USD-200925");
+        channel.add("futures/mark_price:BTC-USD-201225");
         //调用订阅方法
-        webSocketClient.subscribe(channel);
+        WebSocketClient.subscribe(channel);
         //为保证测试方法不停，需要让线程延迟
         try {
             Thread.sleep(10000000);
@@ -249,11 +247,11 @@ public class FuturesPublicChannelTest {
     public void unsubscribeChannel() {
         ArrayList<String> list = Lists.newArrayList();
         //添加要取消订阅的频道名
-        list.add("futures/candle60s:BTC-USD-200925");
+        list.add("futures/mark_price:BTC-USD-201225");
         //订阅
-        webSocketClient.subscribe(list);
+        WebSocketClient.subscribe(list);
         //取消订阅
-        webSocketClient.unsubscribe(list);
+        WebSocketClient.unsubscribe(list);
         //为保证收到服务端返回的消息，需要让线程延迟
         try {
             Thread.sleep(100);

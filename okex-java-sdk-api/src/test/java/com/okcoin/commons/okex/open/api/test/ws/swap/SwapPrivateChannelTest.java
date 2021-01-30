@@ -13,7 +13,6 @@ import java.util.ArrayList;
 
 public class SwapPrivateChannelTest {
 
-
     private static final WebSocketClient webSocketClient = new WebSocketClient();
 
     @Before
@@ -38,7 +37,7 @@ public class SwapPrivateChannelTest {
     @After
     public void close() {
         System.out.println(Instant.now().toString() + " close connect!");
-        webSocketClient.closeConnection();
+        WebSocketClient.closeConnection();
     }
 
     /**
@@ -48,14 +47,14 @@ public class SwapPrivateChannelTest {
     @Test
     public void positionChannel() {
         ArrayList<String> channel = Lists.newArrayList();
-        channel.add("swap/position:MNBTC-USDT-SWAP");
+        channel.add("swap/position:BTC-USDT-SWAP");
         try {
             Thread.sleep(100);
         } catch (Exception e) {
             e.printStackTrace();
         }
         //订阅
-        webSocketClient.subscribe(channel);
+        WebSocketClient.subscribe(channel);
         //为保证测试方法不停，需要让线程延迟
         try {
             Thread.sleep(10000000);
@@ -71,14 +70,14 @@ public class SwapPrivateChannelTest {
     @Test
     public void accountChannel() {
         ArrayList<String> channel = Lists.newArrayList();
-        channel.add("swap/account:BCH-USD-SWAP");
+        channel.add("swap/account:BTC-USD-SWAP");
         try {
             Thread.sleep(100);
         } catch (Exception e) {
             e.printStackTrace();
         }
         //订阅
-        webSocketClient.subscribe(channel);
+        WebSocketClient.subscribe(channel);
         //为保证测试方法不停，需要让线程延迟
         try {
             Thread.sleep(10000000);
@@ -94,14 +93,14 @@ public class SwapPrivateChannelTest {
     @Test
     public void orderChannel() {
         ArrayList<String> channel = Lists.newArrayList();
-        channel.add("swap/order:MNBTC-USDT-SWAP");
+        channel.add("swap/order:BTC-USDT-SWAP");
         try {
             Thread.sleep(100);
         } catch (Exception e) {
             e.printStackTrace();
         }
         //订阅
-        webSocketClient.subscribe(channel);
+        WebSocketClient.subscribe(channel);
         //为保证测试方法不停，需要让线程延迟
         try {
             Thread.sleep(10000000);
@@ -124,7 +123,7 @@ public class SwapPrivateChannelTest {
             e.printStackTrace();
         }
         //订阅
-        webSocketClient.subscribe(channel);
+        WebSocketClient.subscribe(channel);
         //为保证测试方法不停，需要让线程延迟
         try {
             Thread.sleep(10000000);
@@ -144,7 +143,7 @@ public class SwapPrivateChannelTest {
             e.printStackTrace();
         }
         //取消订阅
-        webSocketClient.unsubscribe(channel);
+        WebSocketClient.unsubscribe(channel);
         //为保证测试方法不停，需要让线程延迟
         try {
             Thread.sleep(1000);

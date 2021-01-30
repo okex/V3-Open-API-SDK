@@ -5,38 +5,27 @@ package com.okcoin.commons.okex.open.api.bean.futures.result;
  * Created by Tony Tian on 2018/2/26 13;16. <br/>
  */
 public class Ticker {
-    /**
-     * The id of the futures contract
-     */
+
     private String instrument_id;
-    /**
-     * Buy first price
-     */
-    private String best_bid;
-    /**
-     * Sell first price
-     */
-    private String best_ask;
-    /**
-     * Highest price
-     */
-    private String high_24h;
-    /**
-     * Lowest price
-     */
-    private String low_24h;
-    /**
-     * Latest price
-     */
     private String last;
-    /**
-     * Volume (recent 24 hours)
-     */
+    private String best_bid;
+    private String best_ask;
+    private String high_24h;
+    private String low_24h;
     private String volume_24h;
-    /**
-     * timestamp
-     */
+    private String volume_token_24h;
     private String timestamp;
+    private String last_qty;
+    private String best_ask_size;
+    private String best_bid_size;
+
+    public String getVolume_token_24h() {
+        return volume_token_24h;
+    }
+
+    public void setVolume_token_24h(String volume_token_24h) {
+        this.volume_token_24h = volume_token_24h;
+    }
 
     public String getLast_qty() {
         return last_qty;
@@ -61,17 +50,6 @@ public class Ticker {
     public void setBest_bid_size(String best_bid_size) {
         this.best_bid_size = best_bid_size;
     }
-
-    private String last_qty;
-    private String best_ask_size;
-    private String best_bid_size;
-
-
-
-
-
-
-
 
     public String getInstrument_id() { return instrument_id; }
 

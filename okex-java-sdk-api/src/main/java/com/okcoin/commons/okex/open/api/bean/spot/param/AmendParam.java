@@ -6,12 +6,23 @@ import java.util.List;
 
 public class AmendParam {
 
-    private String order_id;
+    private String instrument_id;
+
+    public String getInstrument_id() {
+        return instrument_id;
+    }
+
+    public void setInstrument_id(String instrument_id) {
+        this.instrument_id = instrument_id;
+    }
+
     private String cancel_on_fail;
     private String client_oid;
     private String request_id;
     private String new_size;
     private String new_price;
+    private String order_id;
+
 
     public String getOrder_id() {
         return order_id;

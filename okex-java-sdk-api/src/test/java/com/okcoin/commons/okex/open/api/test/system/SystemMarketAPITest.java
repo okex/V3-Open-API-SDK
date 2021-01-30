@@ -19,15 +19,12 @@ public class SystemMarketAPITest extends SystemAPIBaseTest{
 
     /**
      * 公共-获取系统升级状态
-     * 获取系统维护的状态。
      * GET /api/system/v3/status
-     * 限速规则：1次/5s
      */
     @Test
     public void testGetMaintenance(){
-        String result = systemMarketAPIService.getMaintenance("2");
+        String result = systemMarketAPIService.getMaintenance("0");
         System.out.println(result);
     }
-
 
 }

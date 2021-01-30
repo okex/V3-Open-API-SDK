@@ -24,8 +24,6 @@ public class FuturesAPIBaseTests extends BaseTests {
         config.setSecretKey("");
         config.setPassphrase("");
 
-
-
         config.setPrint(true);
         config.setI18n(I18nEnum.SIMPLIFIED_CHINESE);
 //        config.setI18n(I18nEnum.ENGLISH);
@@ -39,9 +37,9 @@ public class FuturesAPIBaseTests extends BaseTests {
     int to = 0;
     int limit = 20;
 
-    String instrument_id = "BTC-USD-191108";
+    /*String instrument_id = "BTC-USD-191108";
     String currency = FuturesCurrenciesEnum.BTC.name();
     String direction = FuturesDirectionEnum.LONG.getDirection();
-    String leverage = "22.22";
+    String leverage = "22.22";*/
 
 }

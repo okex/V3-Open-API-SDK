@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 import com.okcoin.commons.okex.open.api.bean.futures.param.*;
 import com.okcoin.commons.okex.open.api.bean.futures.result.*;
 import retrofit2.http.Body;
+import retrofit2.http.Query;
 
 import java.util.List;
 
@@ -18,192 +19,106 @@ import java.util.List;
  */
 public interface FuturesTradeAPIService {
 
-    /**
-     * Get all of futures contract position list
-     */
+    //所有合约持仓信息
     JSONObject getPositions();
 
-    /**
-     * Get the futures contract product position
-     *
-     * @param instrument_id The id of the futures contract eg: BTC-USD-0331"
-     */
-    JSONObject getInstrumentPosition(String instrument_id);
+    //单个合约持仓信息
+    JSONObject getPositionByInstrumentId(String instrument_id);
 
-    /**
-     * Get all of futures contract account list
-     */
+    //所有币种合约账户信息
     JSONObject getAccounts();
 
-    /**
-     * Get the futures contract currency account
-     *
-     * @param underlying {@link com.okcoin.commons.okex.open.api.enums.FuturesCurrenciesEnum}
-     *                 eg: FuturesCurrenciesEnum.BTC.name()
-     */
-    JSONObject getAccountsByCurrency(String underlying);
+    //单个币种合约账户信息
+    JSONObject getAccountsByUnderlying(String underlying);
 
-    /**
-     * Get the futures contract currency ledger
-     *
-     * @param underlying {@link com.okcoin.commons.okex.open.api.enums.FuturesCurrenciesEnum}
-     *                 eg: FuturesCurrenciesEnum.BTC.name()
-     */
-    JSONArray getAccountsLedgerByCurrency(String underlying,String after,String before,String limit,String type);
+    //获取合约币种杠杆倍数
+    JSONObject getLeverage(String underlying);
 
-    /**
-     * Get the futures contract product holds
-     *
-     * @param instrumentId The id of the futures contract eg: BTC-USD-0331"
-     */
-    JSONObject getAccountsHoldsByInstrumentId(String instrumentId);
+    //设定合约币种杠杆倍数(逐仓)
+    JSONObject setLeverageOnFixed(String underlying,String instrument_id,String direction, String leverage);
 
-    /**
-     * Create a new order
-     */
+    //设定合约币种杠杆倍数(全仓)
+    JSONObject setLeverageOnCross(String underlying,String leverage);
+
+    //账单流水查询
+    JSONArray getAccountsLedgerByUnderlying(String underlying,String after,String before,String limit,String type);
+
+    //下单
     OrderResult order(Order order);
 
-    /**
-     * Batch create new order.(Max of 5 orders are allowed per request))
-     */
+    //批量下单
     JSONObject orders(Orders orders);
 
-    /**
-     * Cancel the order
-     *
-     * @param instrument_id The id of the futures contract eg: BTC-USD-0331"
-     * @param order_id   the order id provided by okex.com eg: 372238304216064
-     */
+    //撤销指定订单(通过order_id)
     JSONObject cancelOrderByOrderId(String instrument_id, String order_id);
 
+    //撤销指定订单(通过client_oid)
     JSONObject cancelOrderByClientOid(String instrument_id, String client_oid);
 
-    /**
-     * Batch Cancel the orders of this product id
-     *
-     * @param instrument_id The id of the futures contract eg: BTC-USD-0331"
-     */
-    JSONObject cancelOrders(String instrument_id, CancelOrders cancelOrders);
+    //批量撤销订单(通过order_id)
+    JSONObject cancelOrdersByOrderId(String instrument_id, CancelOrders cancelOrders);
 
+    //批量撤销订单(通过client_oid)
+    JSONObject cancelOrdersByClientOid(String instrument_id, CancelOrders cancelOrders);
+
+    //修改订单(通过order_id)
     JSONObject amendOrderByOrderId(String instrument_id,AmendOrder amendOrder);
 
+    //修改订单（通过client_oid)
     JSONObject amendOrderByClientOId(String instrument_id,AmendOrder amendOrder);
 
+    //批量修改订单(通过order_id)
     JSONObject amendBatchOrdersByOrderId(String instrument_id, AmendDateParam amendOrder);
 
-
+    //批量修改订单（通过client_oid)
     JSONObject amendBatchOrdersByClientOid(String instrument_id, AmendDateParam amendOrder);
 
-
-
-
-    /**
-     * Get all of futures contract order list
-     *
-     * @param state   Order status: 0: waiting for transaction 1: 1: part of the deal 2: all transactions.
-     * @param before    Paging content after requesting this id .
-     * @param after     Paging content prior to requesting this id.
-     * @param limit    Number of results per request. Maximum 100. (default 100)
-     *                 {@link com.okcoin.commons.okex.open.api.bean.futures.CursorPageParams}
-     * @return
-     */
+    //获取订单列表
     JSONObject getOrders(String instrument_id, String state, String after, String before, String limit);
 
-    /**
-     * Get all of futures contract a order by order id
-     *
-     * @param instrument_id  eg: futures id
-     */
+    //获取订单信息(通过order_id)
     JSONObject getOrderByOrderId(String instrument_id,String order_id);
+
+    //获取订单信息(通过client_oid)
     JSONObject getOrderByClientOid(String instrument_id,String client_oid);
 
-    /**
-     * Get all of futures contract transactions.
-     *
-     * @param instrument_id The id of the futures contract eg: BTC-USD-0331"
-     * @param order_id   the order id provided by okex.com eg: 372238304216064
-     * @param before    Paging content after requesting this id .
-     * @param after     Paging content prior to requesting this id.
-     * @param limit     Number of results per request. Maximum 100. (default 100)
-     *                  {@link com.okcoin.commons.okex.open.api.bean.futures.CursorPageParams}
-     * @return
-     */
-    JSONArray getFills(String instrument_id, String order_id, String before, String after, String limit);
+    //获取成交明细
+    JSONArray getFills(String order_id, String instrument_id, String after, String before, String limit);
 
-    /**
-     * Get the futures LeverRate
-     *
-     * @param underlying eg: btc
-     */
-    JSONObject getInstrumentLeverRate(String underlying);
-
-
-    /**
-     * Change the futures Fixed LeverRate
-     *
-     * @param underlying       eg: btc-usd
-     * @param instrument_id   eg: BTC-USD-190628
-     * @param direction      eg: long
-     * @param leverage       eg: 10
-     * @return
-     */
-    JSONObject changeLeverageOnFixed(String underlying,String instrument_id,String direction, String leverage);
-
-    /**
-     * Change the futures Cross LeverRate
-     *
-     * @param underlying      eg: btc
-     * @param leverage      eg: 10
-     * @return
-     */
-    JSONObject changeLeverageOnCross(String underlying,String leverage);
-
-    JSONObject closePositions(ClosePositions closePositions);
-
-    JSONObject cancelAll(CancelAll cancelAll);
-
+    //设置合约币种账户模式
     JSONObject changeMarginMode(ChangeMarginMode changeMarginMode);
 
-    JSONObject changeLiquiMode(ChangeLiquiMode changeLiquiMode);
+    //市价全平
+    JSONObject closePositions(ClosePositions closePositions);
 
-    Holds getHolds(String instrument_id);
-    /**
-     * 策略委托下单
-     * @param futuresOrderParam
-     * @return
-     */
+    //撤销所有平仓挂单
+    JSONObject cancelAll(CancelAll cancelAll);
+
+    //获取合约挂单冻结数量
+    JSONObject getAccountsHoldsByInstrumentId(String instrumentId);
+
+    //策略委托下单
     FuturesOrderResult futuresOrder(@Body FuturesOrderParam futuresOrderParam);
 
-    /**
-     * 策略委托撤单
-     * @param cancelFuturesOrder
-     * @return
-     */
+    //策略委托撤单
     CancelFuturesOrdeResult cancelFuturesOrder(@Body CancelFuturesOrder cancelFuturesOrder);
 
-    /**
-     * 查看策略委托订单
-     * @param instrument_id
-     * @param order_type
-     * @param status
-     * @param algo_id
-     * @param after
-     * @param before
-     * @param limit
-     * @return
-     */
+    //获取委托单列表
     String findFuturesOrder( String instrument_id,
-                                 String order_type,
-                                 String status,
-                                 String algo_id,
-                                 String after,
-                                 String before,
-                                 String limit);
+                             String order_type,
+                             String status,
+                             String algo_id,
+                             String before,
+                             String after,
+                             String limit);
 
-    JSONObject getTradeFee();
+    //获取当前手续费费率
+    JSONObject getTradeFee(String category,String underlying);
 
     //增加/减少保证金
     JSONObject modifyMargin(ModifyMarginParam modifyMarginParam);
 
+    //设置逐仓自动追加保证金
     JSONObject modifyFixedMargin(ModifyFixedMargin modifyFixedMargin);
+
 }

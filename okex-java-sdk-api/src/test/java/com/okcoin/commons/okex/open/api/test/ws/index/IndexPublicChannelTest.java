@@ -25,17 +25,20 @@ public class IndexPublicChannelTest {
     @After
     public void close() {
         System.out.println(Instant.now().toString() + " close connect!");
-        webSocketClient.closeConnection();
+        WebSocketClient.closeConnection();
     }
 
-    //行情指数频道
+    /**
+     * 指数行情
+     * index/ticker Channel
+     */
     @Test
     public void indexTickerChannel() {
         //添加订阅频道
         ArrayList<String> channel = Lists.newArrayList();
         channel.add("index/ticker:BTC-USD");
         //调用订阅方法
-        webSocketClient.subscribe(channel);
+        WebSocketClient.subscribe(channel);
         //为保证测试方法不停，需要让线程延迟
         try {
             Thread.sleep(10000000);
@@ -44,15 +47,17 @@ public class IndexPublicChannelTest {
         }
     }
 
-
-    //指数K线
+    /**
+     * 指数K线
+     * index/candle Channel
+     */
     @Test
     public void indexCandleChannel() {
         //添加订阅频道
         ArrayList<String> channel = Lists.newArrayList();
-        channel.add("index/candle60s:XRP-USD");
+        channel.add("index/candle60s:BTC-USD");
         //调用订阅方法
-        webSocketClient.subscribe(channel);
+        WebSocketClient.subscribe(channel);
         //为保证测试方法不停，需要让线程延迟
         try {
             Thread.sleep(10000000);
@@ -67,7 +72,7 @@ public class IndexPublicChannelTest {
         ArrayList<String> list = Lists.newArrayList();
         //添加要取消订阅的频道名
         list.add("index/candle60s:BTC-USD");
-        webSocketClient.unsubscribe(list);
+        WebSocketClient.unsubscribe(list);
         //为保证收到服务端返回的消息，需要让线程延迟
         try {
             Thread.sleep(100);
@@ -75,8 +80,5 @@ public class IndexPublicChannelTest {
             e.printStackTrace();
         }
     }
-
-
-
 
 }

@@ -115,9 +115,14 @@ public class DateUtils {
      */
     public static String getUnixTime() {
         StringBuilder nowStr = new StringBuilder(Instant.now().toString());
+
+      return new Date(System.currentTimeMillis()).toInstant().toString();
+
+//        System.out.println("————————时间戳："+nowStr);
+
         //可以有效解决字符串下标越界的问题
-//        return new StringBuilder().append(nowStr.toString()).toString();
-        return new StringBuilder().append(nowStr.substring(0,nowStr.lastIndexOf("."))).append(nowStr.substring(nowStr.lastIndexOf(".")).substring(0,4)).append(nowStr.substring(nowStr.length()-1)).toString();
+        //return new StringBuilder().append(nowStr.toString()).toString();
+        // return new StringBuilder().append(nowStr.substring(0,nowStr.lastIndexOf("."))).append(nowStr.substring(nowStr.lastIndexOf(".")).substring(0,4)).append(nowStr.substring(nowStr.length()-1)).toString();
     }
 
     /**Date

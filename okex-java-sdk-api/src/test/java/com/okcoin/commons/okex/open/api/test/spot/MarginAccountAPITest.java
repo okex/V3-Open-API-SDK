@@ -26,9 +26,7 @@ public class MarginAccountAPITest extends SpotAPIBaseTests {
 
     /**
      * 币币杠杆账户信息
-     * 获取币币杠杆账户资产列表，查询各币种的余额、冻结和可用等信息。
      * GET /api/margin/v3/accounts
-     * 限速规则：20次/2s
      */
     @Test
     public void getAccounts() {
@@ -38,22 +36,17 @@ public class MarginAccountAPITest extends SpotAPIBaseTests {
 
     /**
      * 单一币对账户信息
-     * 获取币币杠杆某币对账户的余额、冻结和可用等信息。
      * GET /api/margin/v3/accounts/<instrument_id>
-     * 限速规则：20次/2s
      */
     @Test
-    public void getAccountsByProductId() {
-        final Map<String, Object> result = this.marginAccountAPIService.getAccountsByProductId("BTC-USDT");
+    public void getAccountsByInstrumentId() {
+        final Map<String, Object> result = this.marginAccountAPIService.getAccountsByInstrumentId("BTC-USDT");
         this.toResultString(MarginAccountAPITest.LOG, "result", result);
     }
 
     /**
      * 账单流水查询
-     * 列出杠杆帐户资产流水。帐户资产流水是指导致帐户余额增加或减少的行为。流水会分页，并且按时间倒序排序和存储，最新的排在最前面。
-     * 请参阅分页部分以获取第一页之后的其他纪录。 本接口能查询最近3个月的数据。
      * GET /api/margin/v3/accounts/<instrument_id>/ledger
-     * 限速规则：10次/2s
      */
     @Test
     public void getLedger() {
@@ -64,9 +57,7 @@ public class MarginAccountAPITest extends SpotAPIBaseTests {
 
     /**
      * 杠杆配置信息
-     * 获取币币杠杆账户的借币配置信息，包括当前最大可借、借币利率、最大杠杆倍数。
      * GET /api/margin/v3/accounts/availability
-     * 限速规则：20次/2s
      */
     @Test
     public void getAvailability() {
@@ -76,82 +67,80 @@ public class MarginAccountAPITest extends SpotAPIBaseTests {
 
     /**
      * 某个杠杆配置信息
-     * 获取某个币币杠杆账户的借币配置信息，包括当前最大可借、借币利率、最大杠杆倍数。
      * GET /api/margin/v3/accounts/<instrument_id>/availability
-     * 限速规则：20次/2s
      */
     @Test
-    public void getAvailabilityByProductId() {
-        final List<Map<String, Object>> result = this.marginAccountAPIService.getAvailabilityByProductId("BTC-USDT");
+    public void getAvailabilityByInstrumentId() {
+        final List<Map<String, Object>> result = this.marginAccountAPIService.getAvailabilityByInstrumentId("BTC-USDT");
         this.toResultString(MarginAccountAPITest.LOG, "result", result);
     }
 
     /**
      * 获取借币记录
-     * 获取币币杠杆帐户的借币记录。这个请求支持分页，并且按时间倒序排序和存储，最新的排在最前面。
-     * 请参阅分页部分以获取第一页之后的其他纪录。
      * GET /api/margin/v3/accounts/borrowed
-     * 限速规则：20次/2s
      */
     @Test
     public void getBorrowedAccounts() {
-        final List<MarginBorrowOrderDto> result = this.marginAccountAPIService.getBorrowedAccounts("1", "", "", "");
+        final List<MarginBorrowOrderDto> result = this.marginAccountAPIService.getBorrowedAccounts("1", "", "", "5");
         this.toResultString(MarginAccountAPITest.LOG, "result", result);
     }
 
     /**
      * 某币对借币记录
-     * 获取币币杠杆帐户某币对的借币记录。这个请求支持分页，并且按时间倒序排序和存储，最新的排在最前面。
-     * 请参阅分页部分以获取第一页之后的其他纪录。
      * GET /api/margin/v3/accounts/<instrument_id>/borrowed
-     * 限速规则：20次/2s
      */
     @Test
-    public void getBorrowedAccountsByProductId() {
-        final List<MarginBorrowOrderDto> result = this.marginAccountAPIService.getBorrowedAccountsByProductId("XRP-USDT", null, null, "10", "1");
+    public void getBorrowedAccountsByInstrumentId() {
+        final List<MarginBorrowOrderDto> result = this.marginAccountAPIService.getBorrowedAccountsByInstrumentId("XRP-USDT", "1", null, null, "10");
         this.toResultString(MarginAccountAPITest.LOG, "result", result);
     }
+
     /**
      * 借币
-     * 在某个币币杠杆账户里进行借币。
      * POST /api/margin/v3/accounts/borrow
-     * 限速规则：100次/2s
      */
     @Test
-    public void borrow_1() {
+    public void borrow() {
         final BorrowRequestDto dto = new BorrowRequestDto();
-        dto.setAmount("5");
-        dto.setCurrency("BTC");
         dto.setInstrument_id("BTC-USDT");
-        dto.setClient_oid("");
-        final BorrowResult result = this.marginAccountAPIService.borrow_1(dto);
+        dto.setClient_oid("jiebi02");
+        dto.setCurrency("USDT");
+        dto.setAmount("3");
+        final BorrowResult result = this.marginAccountAPIService.borrow(dto);
         this.toResultString(MarginAccountAPITest.LOG, "result", result);
     }
 
     /**
      * 还币
-     * 在某个币币杠杆账户里进行还币。
      * POST /api/margin/v3/accounts/repayment
-     * 限速规则：100次/2s
      */
     @Test
-    public void repayment_1() {
+    public void repayment() {
         final RepaymentRequestDto dto = new RepaymentRequestDto();
-        dto.setAmount("1");
         dto.setBorrow_id("185778");
-        dto.setCurrency("XRP");
-        dto.setInstrument_id("XRP-USDT");
         dto.setClient_oid("");
-        final RepaymentResult result = this.marginAccountAPIService.repayment_1(dto);
+        dto.setInstrument_id("XRP-USDT");
+        dto.setCurrency("XRP");
+        dto.setAmount("1");
+
+        final RepaymentResult result = this.marginAccountAPIService.repayment(dto);
         this.toResultString(MarginAccountAPITest.LOG, "result", result);
     }
 
+    /**
+     * 获取杠杆倍数
+     * GET/api/margin/v3/accounts/<instrument_id>/leverage
+     */
+    @Test
+    public void testGetLeverage(){
+        JSONObject result = marginAccountAPIService.getLeverage("BTC-USDT");
+        this.toResultString(MarginAccountAPITest.LOG, "result", result);
+
+    }
 
     /**
      * 设置杠杆倍数
-     * 设置币币杠杆账户币对杠杆倍数。
      * POST /api/margin/v3/accounts/<instrument_id>/leverage
-     * 限速规则：5次/2s
      */
     @Test
     public void testSetLeverage(){
@@ -161,16 +150,4 @@ public class MarginAccountAPITest extends SpotAPIBaseTests {
         this.toResultString(MarginAccountAPITest.LOG, "result", result);
     }
 
-    /**
-     * 获取杠杆倍数
-     * 获取币币杠杆账户币种杠杆倍数
-     * GET/api/margin/v3/accounts/<instrument_id>/leverage
-     * 限速规则：5次/2s
-     */
-    @Test
-    public void testGetLeverage(){
-        JSONObject result = marginAccountAPIService.getLeverage("XRP-USDT");
-        this.toResultString(MarginAccountAPITest.LOG, "result", result);
-
-    }
 }

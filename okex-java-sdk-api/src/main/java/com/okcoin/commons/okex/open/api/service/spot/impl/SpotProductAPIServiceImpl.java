@@ -23,49 +23,46 @@ public class SpotProductAPIServiceImpl implements SpotProductAPIService {
         this.spotProductAPI = this.client.createService(SpotProductAPI.class);
     }
 
-
+    //公共-获取币对信息
     @Override
-    public Ticker getTickerByProductId(final String instrument_id) {
-        return this.client.executeSync(this.spotProductAPI.getTickerByProductId(instrument_id));
+    public List<Product> getInstruments() {
+        return this.client.executeSync(this.spotProductAPI.getInstruments());
     }
 
+    //公共-获取深度数据
     @Override
-    public List<Ticker> getTickers1() {
-        return this.client.executeSync(this.spotProductAPI.getTickers1());
+    public Book bookProductsByInstrumentId(final String instrument_id, final String size, final  String depth) {
+        return this.client.executeSync(this.spotProductAPI.bookProductsByInstrumentId(instrument_id, size, depth));
     }
+
+    //公共-获取全部ticker信息
     @Override
-    public String getTickers() {
+    public List<Ticker> getTickers() {
         return this.client.executeSync(this.spotProductAPI.getTickers());
     }
 
+    //公共-获取某个ticker信息
     @Override
-    public Book bookProductsByProductId(final String instrument_id, final String size, final  String depth) {
-        return this.client.executeSync(this.spotProductAPI.bookProductsByProductId(instrument_id, size, depth));
+    public Ticker getTickerByInstrumentId(final String instrument_id) {
+        return this.client.executeSync(this.spotProductAPI.getTickerByInstrumentId(instrument_id));
     }
 
+    //公共-获取成交数据
     @Override
-    public List<Product> getProducts() {
-        return this.client.executeSync(this.spotProductAPI.getProducts());
+    public List<Trade> getTradesByInstrumentId(final String instrument_id,final String limit) {
+        return this.client.executeSync(this.spotProductAPI.getTradesByInstrumentId(instrument_id,limit));
     }
 
+    //公共-获取K线数据
     @Override
-    public List<Trade> getTrades(final String instrument_id,final String limit) {
-        return this.client.executeSync(this.spotProductAPI.getTrades(instrument_id,limit));
+    public JSONArray getCandlesByInstrumentId(final String instrument_id, final String start, final String end, final String granularity) {
+        return this.client.executeSync(this.spotProductAPI.getCandlesByInstrumentId(instrument_id,start, end, granularity));
     }
 
+    //公共-获取历史K线数据
     @Override
-    public JSONArray getHistoryCandles(String instrument_id, String granularity, String start, String end) {
-        return this.client.executeSync(this.spotProductAPI.getHistoryCandles(instrument_id, granularity, start, end));
+    public JSONArray getHistoryCandlesByInstrumentId(String instrument_id, String start, String end, String granularity, String limit) {
+        return this.client.executeSync(this.spotProductAPI.getHistoryCandlesByInstrumentId(instrument_id, start, end, granularity, limit));
     }
-
-    @Override
-    public JSONArray getCandles(final String instrument_id, final String granularity, final String start, final String end) {
-        return this.client.executeSync(this.spotProductAPI.getCandles(instrument_id, granularity, start, end));
-    }
-
-
-
-
-
 
 }

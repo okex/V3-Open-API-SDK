@@ -29,27 +29,27 @@ public class SpotOrderAPITest extends SpotAPIBaseTests {
 
     /**
      * 下单
-     * OKEx币币交易提供限价单和市价单和高级限价单下单模式。只有当您的账户有足够的资金才能下单。
-     * 一旦下单，您的账户资金将在订单生命周期内被冻结。被冻结的资金以及数量取决于订单指定的类型和参数。
      * POST /api/spot/v3/orders
-     * 限速规则：100次/2s
      */
     @Test
     public void addOrder() {
         final PlaceOrderParam order = new PlaceOrderParam();
-        order.setClient_oid("testSpot0728");
-        order.setInstrument_id("BTC-USDT");
+
+        order.setClient_oid("1022testspot9");
         order.setType("limit");
         order.setSide("sell");
+        order.setInstrument_id("EOS-USDT");
         order.setOrder_type("0");
 
-        //限价单
-        order.setPrice("9120");
-        order.setSize("0.001");
+        //限价单特殊参数
 
-        //市价单 买入必填notional（买入金额），卖出必填size（卖出数量）
-//        order.setNotional("");
-//        order.setSize("0.01");
+        order.setPrice("2.7");
+        order.setSize("1");
+
+        //市价单特殊参数  买入必填notional（买入金额），卖出必填size（卖出数量）
+        //order.setSize("0.01");
+        order.setNotional("");
+
 
         final OrderResult orderResult = this.spotOrderAPIServive.addOrder(order);
         this.toResultString(SpotOrderAPITest.LOG, "orders", orderResult);
@@ -57,106 +57,135 @@ public class SpotOrderAPITest extends SpotAPIBaseTests {
 
     /**
      * 批量下单
-     * 下指定币对的多个订单（每次只能下最多4个币对且每个币对可批量下10个单）
      * POST /api/spot/v3/batch_orders
-     * 限速规则：50次/2s
      */
     @Test
     public void batchAddOrder() {
         final List<PlaceOrderParam> list = new ArrayList<>();
+
         final PlaceOrderParam order = new PlaceOrderParam();
-        order.setClient_oid("TEST01");
-        order.setInstrument_id("LTC-USDT");
-        order.setPrice("0.21");
-        order.setType("market");
-        order.setSide("buy");
-        order.setNotional("0.25");
-        order.setSize("1");
+        order.setClient_oid("1028testspot5");
+        order.setType("limit");
+        order.setSide("sell");
+        order.setInstrument_id("EOS-USDT");
         order.setOrder_type("0");
+
+        //限价单特殊参数
+        order.setPrice("3.5");
+        order.setSize("1");
+
+        //市价单特殊参数
+        /*order.setSize("0.001");
+        order.setNotional("0.25");*/
+
         list.add(order);
 
+
         final PlaceOrderParam order1 = new PlaceOrderParam();
-        order1.setClient_oid("CTT0611TEST02");
-        order1.setInstrument_id("LTC-USDT");
-        order1.setPrice("5.4");
-        order.setNotional("0.75");
-        order1.setType("market");
-        order1.setSide("buy");
-        order1.setSize("1");
+        order1.setClient_oid("1028testspot6");
+        order1.setType("limit");
+        order1.setSide("sell");
+        order1.setInstrument_id("EOS-USDT");
         order1.setOrder_type("0");
+
+        //限价单特殊参数
+        order1.setPrice("3.4");
+        order1.setSize("1");
+
+
+        //市价单特殊参数
+        /*order1.setSize("0.001");
+        order.setNotional("0.75");*/
+
         list.add(order1);
 
        /* final PlaceOrderParam order2 = new PlaceOrderParam();
+
         order2.setClient_oid("CTTXRP1226TEST01");
-        order2.setInstrument_id("XRP-USDT");
-        order2.setPrice("0.21");
         order2.setType("limit");
         order2.setSide("sell");
-        order2.setSize("1");
+        order2.setInstrument_id("XRP-USDT");
         order2.setOrder_type("0");
+
+        //限价单特殊参数
+        order2.setPrice("0.21");
+        order2.setSize("1");
+
+        //市价单特殊参数
+        order2.setSize("1");
+        order2.setNotional("0.75");
+
         list.add(order2);
 
         final PlaceOrderParam order3 = new PlaceOrderParam();
+
         order3.setClient_oid("CTTXRP1226TEST02");
-        order3.setInstrument_id("XRP-USDT");
-        order3.setPrice("0.23");
         order3.setType("limit");
         order3.setSide("sell");
-        order3.setSize("1");
+        order3.setInstrument_id("XRP-USDT");
         order3.setOrder_type("0");
+
+        //限价单特殊参数
+        order3.setPrice("0.23");
+        order3.setSize("1");
+
+        //市价单特殊参数
+        order3.setSize("1");
+        order3.setNotional("0.75");
+
         list.add(order3);*/
-
-
 
         final Map<String, List<OrderResult>> orderResult = this.spotOrderAPIServive.addOrders(list);
         this.toResultString(SpotOrderAPITest.LOG, "orders", orderResult);
     }
 
-
-
     /**
-     * 撤销指定订单 post协议
-     * POST /api/spot/v3/cancel_orders/<order_id> or <client_oid>
-     * 限速规则：100次/2s
+     * 撤销指定订单(通过order_id进行撤单)
+     * POST /api/spot/v3/cancel_orders/<order_id>
      */
     @Test
-    public void cancleOrderByOrderId_post() {
+    public void cancleOrderByOrderId() {
         final PlaceOrderParam order = new PlaceOrderParam();
-        order.setInstrument_id("LTC-USDT");
-        final OrderResult orderResult = this.spotOrderAPIServive.cancleOrderByOrderId_post(order, "5308335252259840");
+        order.setInstrument_id("EOS-USDT");
+        final OrderResult orderResult = this.spotOrderAPIServive.cancleOrderByOrderId(order, "5802604883829760");
         this.toResultString(SpotOrderAPITest.LOG, "cancleOrder", orderResult);
     }
-
-    @Test
-    public void cancleOrderByClientOid_post() {
-        final PlaceOrderParam order = new PlaceOrderParam();
-        order.setInstrument_id("XRP-USDT");
-        final OrderResult orderResult = this.spotOrderAPIServive.cancleOrderByClientOid(order, "testspot1");
-        this.toResultString(SpotOrderAPITest.LOG, "cancleOrder", orderResult);
-    }
-
 
     /**
-     * 批量撤单 post协议
-     * 撤销指定的某一种或多种币对的未完成订单（每次只能下最多4个币对且每个币对可批量下10个单）。
+     * 撤销指定订单(通过client_oid进行撤单)
+     * POST /api/spot/v3/cancel_orders/<client_oid>
+     */
+    @Test
+    public void cancleOrderByClientOid() {
+        final PlaceOrderParam order = new PlaceOrderParam();
+        order.setInstrument_id("EOS-USDT");
+        final OrderResult orderResult = this.spotOrderAPIServive.cancleOrderByClientOid(order, "1022testspot2");
+        this.toResultString(SpotOrderAPITest.LOG, "cancleOrder", orderResult);
+    }
+
+    /**
+     * 批量撤单(根据order_id进行撤单)
      * POST /api/spot/v3/cancel_batch_orders
-     * 限速规则：50次/2s
      */
-    //根据order_id进行批量撤单
     @Test
-    public void batchCancleOrders_post() {
+    public void batchCancleOrdersByOrderId() {
         final List<OrderParamDto> cancleOrders = new ArrayList<>();
+
         final OrderParamDto dto = new OrderParamDto();
-        dto.setInstrument_id("BTC-USDT");
+
+        dto.setInstrument_id("EOS-USDT");
+
         final List<String> order_ids = new ArrayList<>();
-        order_ids.add("4585322868184070");
-        //order_ids.add("");
+        order_ids.add("5802601851736064");
+        order_ids.add("5802601851736065");
 
         dto.setOrder_ids(order_ids);
         cancleOrders.add(dto);
 
         /*final OrderParamDto dto1 = new OrderParamDto();
+
         dto1.setInstrument_id("XRP-USDT");
+
         final List<String> order_ids1 = new ArrayList<>();
         order_ids1.add("4096139176250370");
         order_ids1.add("4096139176250371");
@@ -164,25 +193,32 @@ public class SpotOrderAPITest extends SpotAPIBaseTests {
         dto1.setOrder_ids(order_ids1);
         cancleOrders.add(dto1);*/
 
-        final Map<String, Object> orderResult = this.spotOrderAPIServive.cancleOrders_post(cancleOrders);
+        final Map<String, Object> orderResult = this.spotOrderAPIServive.batchCancleOrdersByOrderId(cancleOrders);
         this.toResultString(SpotOrderAPITest.LOG, "cancleOrders", orderResult);
     }
 
-    //根据client_oid批量撤单
+    /**
+     * 批量撤单(根据client_oid进行撤单)
+     * POST /api/spot/v3/cancel_batch_orders
+     */
     @Test
-    public void batchCancleOrders_postByClient_oid1() {
+    public void batchCancleOrdersByClientOid() {
         List<OrderParamDto> list = new ArrayList<>();
 
         OrderParamDto param1 = new OrderParamDto();
-        param1.setInstrument_id("XRP-USDT");
+
+        param1.setInstrument_id("EOS-USDT");
         List<String> client_oid = new ArrayList<>();
-        client_oid.add("TBTC1226TEST01");
-        client_oid.add("TBTC1226TEST02");
+        client_oid.add("1022testspot3");
+        client_oid.add("1022testspot4");
+
         param1.setClient_oids(client_oid);
         list.add(param1);
 
         /*OrderParamDto param2 = new OrderParamDto();
+
         param2.setInstrument_id("XRP-USDT");
+
         List<String> client_oid1 = new ArrayList<>();
         client_oid1.add("CTTXRP1226TEST01");
         client_oid1.add("CTTXRP1226TEST02");
@@ -191,124 +227,221 @@ public class SpotOrderAPITest extends SpotAPIBaseTests {
 
         list.add(param2);*/
 
-        final Map<String, Object> orderResult = this.spotOrderAPIServive.batch_orderCle(list);
+        final Map<String, Object> orderResult = this.spotOrderAPIServive.batchCancleOrdersByClientOid(list);
         this.toResultString(SpotOrderAPITest.LOG, "cancleOrders", orderResult);
     }
 
-
     /**
-     * 获取指定订单信息
-     * 通过订单ID获取单个订单信息。可以获取近3个月订单信息。已撤销的未成交单只保留2个小时。
-     * GET /api/spot/v3/orders/<order_id>
-     * 限速规则：20次/2s
+     * 修改订单(通过order_id)
+     * POST/api/spot/v3/amend_order/<instrument_id>
      */
     @Test
-    public void getOrderByOrderId() {
-        final OrderInfo orderInfo = this.spotOrderAPIServive.getOrderByOrderId("LTC-USDT", "5308335252259840");
-        this.toResultString(SpotOrderAPITest.LOG, "orderInfo", orderInfo);
-    }
+    public void testAmendOrderByOrderId(){
+        AmendParam amendParam = new AmendParam();
+        amendParam.setOrder_id("5801704821383168");
+        amendParam.setCancel_on_fail("0");
+        amendParam.setRequest_id(null);
+        amendParam.setNew_size("1.5");
+        amendParam.setNew_price("2.71");
 
-    @Test
-    public void getOrderByClientOid() {
-        final OrderInfo orderInfo = this.spotOrderAPIServive.getOrderByClientOid("XRP-USDT","testspot1");
-        this.toResultString(SpotOrderAPITest.LOG, "orderInfo", orderInfo);
+        JSONObject result = this.spotOrderAPIServive.amendOrderByOrderId("EOS-USDT",amendParam);
+        this.toResultString(SpotOrderAPITest.LOG, "amendOrder", result);
+
     }
 
     /**
-     * 查询订单列表
-     * 列出您当前的订单信息（本接口能查询最近3个月订单信息）。
-     * 这个请求支持分页，并且按委托时间倒序排序和存储，最新的排在最前面。
+     * 修改订单(通过client_oid)
+     * POST/api/spot/v3/amend_order/<instrument_id>
+     */
+    @Test
+    public void testAmendOrderByClientOid(){
+        AmendParam amendParam = new AmendParam();
+        amendParam.setClient_oid("1021testspot8");
+        amendParam.setCancel_on_fail("0");
+        amendParam.setRequest_id(null);
+        amendParam.setNew_size("1.2");
+        amendParam.setNew_price("2.72");
+
+        JSONObject result = this.spotOrderAPIServive.amendOrderByClientOid("EOS-USDT",amendParam);
+        this.toResultString(SpotOrderAPITest.LOG, "amendOrder", result);
+
+    }
+
+    /**
+     * 批量修改订单(通过order_id)
+    * POST/api/spot/v3/amend_batch_orders
+     */
+    @Test
+    public void testBatchAmendOrdersByOrderId(){
+        List<AmendParam> list = new ArrayList<>();
+        AmendParam amendParam = new AmendParam();
+        amendParam.setInstrument_id("EOS-USDT");
+        amendParam.setOrder_id("5801704821383168");
+        amendParam.setCancel_on_fail("0");
+        amendParam.setRequest_id(null);
+        amendParam.setNew_size("1.1");
+        amendParam.setNew_price("2.732");
+
+        AmendParam amendParam1 = new AmendParam();
+        amendParam1.setInstrument_id("EOS-USDT");
+        amendParam1.setOrder_id("5801704821383169");
+        amendParam1.setCancel_on_fail("0");
+        amendParam1.setRequest_id(null);
+        amendParam1.setNew_size("1.3");
+        amendParam1.setNew_price("2.733");
+
+
+        list.add(amendParam);
+        list.add(amendParam1);
+
+        JSONObject result = this.spotOrderAPIServive.batchAmendOrderByOrderId(list);
+        this.toResultString(SpotOrderAPITest.LOG, "batchAmendOrder", result);
+
+    }
+
+    /**
+     * 批量修改订单(通过client_oid)
+     * POST/api/spot/v3/amend_batch_orders
+     */
+    @Test
+    public void testBatchAmendOrdersByClientOid(){
+        List<AmendParam> list = new ArrayList<>();
+        AmendParam amendParam = new AmendParam();
+        amendParam.setInstrument_id("EOS-USDT");
+        amendParam.setClient_oid("1021testspot8");
+        amendParam.setCancel_on_fail("0");
+        amendParam.setRequest_id(null);
+        amendParam.setNew_size("1.2");
+        amendParam.setNew_price("2.74");
+
+        AmendParam amendParam1 = new AmendParam();
+        amendParam1.setInstrument_id("EOS-USDT");
+        amendParam1.setClient_oid("1021testspot9");
+        amendParam1.setCancel_on_fail("0");
+        amendParam1.setRequest_id(null);
+        amendParam1.setNew_size("1.3");
+        amendParam1.setNew_price("2.74");
+
+
+        AmendDataParam amendDataParam = new AmendDataParam();
+        list.add(amendParam);
+        list.add(amendParam1);
+        amendDataParam.setAmend_data(list);
+
+        JSONObject result = this.spotOrderAPIServive.batchAmendOrdersByClientOid(list);
+        this.toResultString(SpotOrderAPITest.LOG, "batchAmendOrder", result);
+
+    }
+
+    /**
+     * 获取所有订单列表
      * GET /api/spot/v3/orders
-     * 限速规则：10次/2s
      */
     @Test
     public void getOrders() {
-        final List<OrderInfo> orderInfoList = this.spotOrderAPIServive.getOrders("LTC-USDT", "0", null, null, null);
-            this.toResultString(SpotOrderAPITest.LOG, "orderInfoList", orderInfoList);
-    }
-
-    /**
-     * 获取所有未成交订单
-     * 列出您当前所有的订单信息。这个请求支持分页，并且按时间倒序排序和存储，
-     * 最新的排在最前面。请参阅分页部分以获取第一页之后的其他纪录。
-     * GET /api/spot/v3/orders_pending
-     * 限速规则：20次/2s
-     */
-    @Test
-    public void getPendingOrders() {
-        final List<PendingOrdersInfo> orderInfoList = this.spotOrderAPIServive.getPendingOrders(null, null, "10", "XRP-USDT");
+        final List<OrderInfo> orderInfoList = this.spotOrderAPIServive.getOrders("OKB-USDT", "2", null, null, "10");
         this.toResultString(SpotOrderAPITest.LOG, "orderInfoList", orderInfoList);
     }
 
     /**
+     * 获取所有未成交订单
+     * GET /api/spot/v3/orders_pending
+     */
+    @Test
+    public void getPendingOrders() {
+        final List<PendingOrdersInfo> orderInfoList = this.spotOrderAPIServive.getPendingOrders("OKB-USDT", null, null, "10");
+        this.toResultString(SpotOrderAPITest.LOG, "orderInfoList", orderInfoList);
+    }
+
+    /**
+     * 获取订单信息(通过order_id)
+     * GET /api/spot/v3/orders/<order_id>
+     */
+    @Test
+    public void getOrderByOrderId() {
+        final JSONObject orderInfo = this.spotOrderAPIServive.getOrderByOrderId("XRP-USDT", "5836570486258688");
+        this.toResultString(SpotOrderAPITest.LOG, "orderInfo", orderInfo);
+    }
+
+    /**
+     * 获取订单信息(通过client_oid)
+     * GET /api/spot/v3/orders/<order_id>
+     */
+    @Test
+    public void getOrderByClientOid() {
+        final JSONObject orderInfo = this.spotOrderAPIServive.getOrderByClientOid("EOS-USDT","1021testspot8");
+        this.toResultString(SpotOrderAPITest.LOG, "orderInfo", orderInfo);
+    }
+
+    /**
      * 获取成交明细
-     * 获取最近的成交明细表。这个请求支持分页，并且按成交时间倒序排序和存储，最新的排在最前面。
-     * 请参阅分页部分以获取第一页之后的其他记录。 本接口能查询最近3月的数据。
-     * 限速规则：10次/2s
+     * GET/api/spot/v3/fills
      */
     @Test
     public void getFills() {
-        final List<Fills> fillsList = this.spotOrderAPIServive.getFills("4595079090611200", "OKB-USDT", null, null, "100");
+        final List<Fills> fillsList = this.spotOrderAPIServive.getFills(null, "OKB-USDT", null, null, null);
         this.toResultString(SpotOrderAPITest.LOG, "fillsList", fillsList);
     }
 
     /**
      * 策略委托下单
-     * 提供止盈止损、跟踪委托、冰山委托和时间加权委托策略
      * POST /api/spot/v3/order_algo
-     * 限速规则：40次/2s
      */
     @Test
     public void addorder_algo(){
-            final OrderAlgoParam order = new OrderAlgoParam();
-           //公共参数
-            order.setInstrument_id("BTC-USDT");
-            order.setMode("1");
-            order.setOrder_type("1");
-            order.setSize("1");
-            order.setSide("buy");
+        final OrderAlgoParam order = new OrderAlgoParam();
+       //公共参数
+        order.setInstrument_id("EOS-USDT");
+        order.setMode("1");
+        order.setOrder_type("1");
+        order.setSize("1");
+        order.setSide("buy");
 
-            //止盈止损参数
-            order.setTrigger_price("10750");
-            order.setAlgo_price("10600");
-            order.setAlgo_type("1");
+        //计划委托参数
+        order.setTrigger_price("2.45");
+        order.setAlgo_price("2.32");
+        order.setAlgo_type("1");
 
-           //跟踪委托
-            /*order.setCallback_rate("0.01");
-            order.setTrigger_price("10700.9");*/
+       //跟踪委托
+        /*order.setCallback_rate("0.01");
+        order.setTrigger_price("10700.9");*/
 
-            //冰山委托
-            /*order.setAlgo_variance("0.01");
-            order.setAvg_amount("10");
-            order.setLimit_price("10500");*/
+        //冰山委托
+        /*order.setAlgo_variance("0.01");
+        order.setAvg_amount("10");
+        order.setLimit_price("10500");*/
 
-            //时间加权委托
-            /*order.setSweep_range("0.01");
-            order.setSweep_ratio("0.5");
-            order.setSingle_limit("20");
-            order.setLimit_price("10800");
-            order.setTime_interval("10");*/
+        //时间加权委托
+        /*order.setSweep_range("0.01");
+        order.setSweep_ratio("0.5");
+        order.setSingle_limit("20");
+        order.setLimit_price("10800");
+        order.setTime_interval("10");*/
 
-            final OrderAlgoResult orderAlgoResult = this.spotOrderAPIServive.addorder_algo(order);
-            this.toResultString(SpotOrderAPITest.LOG, "orders", orderAlgoResult);
+        //止盈止损参数
+     /* order.setTp_trigger_price("0.26");
+        order.setTp_price("0.255");
+        order.setTp_trigger_type("1");
+        order.setSl_trigger_price("0.29");
+        order.setSl_price("0.295");
+        order.setSl_trigger_type("1");*/
 
+        final OrderAlgoResult orderAlgoResult = this.spotOrderAPIServive.addorder_algo(order);
+        this.toResultString(SpotOrderAPITest.LOG, "orders", orderAlgoResult);
 
     }
 
     /**
      * 策略委托撤单
-     * 根据指定的algo_id撤销某个币的未完成订单，每次最多可撤6（冰山/时间）/10（计划/跟踪）个。
      * POST /api/spot/v3/cancel_batch_algos
-     * 限速规则：20 次/2s
      */
     @Test
     public void cancelOrder_algo(){
         final CancelAlgoParam cancelAlgoParam = new CancelAlgoParam();
         List<String> ids = new ArrayList<>();
-//        String ids [] = {"2492492"};,"2492490"
-        ids.add("2492569");
-        ids.add("2492570");
-        cancelAlgoParam.setInstrument_id("BTC-USDT");
+        ids.add("3302565");
+        ids.add("3302570");
+        cancelAlgoParam.setInstrument_id("EOS-USDT");
         cancelAlgoParam.setOrder_type("1");
         cancelAlgoParam.setAlgo_ids(ids);
         final CancelAlgoResult cancelAlgoResult = this.spotOrderAPIServive.cancelOrder_algo(cancelAlgoParam);
@@ -318,20 +451,13 @@ public class SpotOrderAPITest extends SpotAPIBaseTests {
 
     /**
      * 获取委托单列表
-     * 列出您当前所有的订单信息。
      * GET /api/spot/v3/algo
-     * 限速规则：20次/2s
      */
     @Test
     public void getAlgOrder(){
-        final String findAlgOrderResults=this.spotOrderAPIServive.getAlgoOrder("BTC-USDT",
-                        "1",
-                        null,
-                        "2492569",
-                        null,null,null);
+        final String findAlgOrderResults=this.spotOrderAPIServive.getAlgoOrder("EOS-USDT","1","3",
+                null,null,null,null);
                 this.toResultString(SpotOrderAPITest.LOG, "findAlgOrderResults", findAlgOrderResults);
-
     }
-
 
 }

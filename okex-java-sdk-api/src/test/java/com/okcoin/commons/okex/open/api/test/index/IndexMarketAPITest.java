@@ -19,15 +19,12 @@ public class IndexMarketAPITest extends IndexAPIBaseTest {
     }
 
     /**
-     *公共-获取指数成分
-     * 获取指数成分。此接口为公共接口，不需要身份验证。
-     * 限速规则：20次/2s
+     * 公共-获取指数成分
      * GET /api/index/v3/<instrument_id>/constituents
-     * **/
-
+     */
     @Test
     public void testGetIndex() {
-        final String index = this.marketAPIService.getIndex("BTC-USD");
+        final String index = this.marketAPIService.getIndex("OMG-USD");
         this.toResultString(IndexMarketAPITest.LOG, "index", index);
     }
 

@@ -37,6 +37,7 @@ public class OrderInfo {
      */
 
     private String state;
+
     /**
      * 订单买卖类型 buy/sell
      */

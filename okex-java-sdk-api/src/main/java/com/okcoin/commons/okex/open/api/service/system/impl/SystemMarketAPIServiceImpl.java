@@ -14,10 +14,10 @@ public class SystemMarketAPIServiceImpl implements SystemMarketAPIService {
         this.systemMarketAPI = this.client.createService(SystemMarketAPI.class);
     }
 
+    //获取系统升级状态
     @Override
     public String getMaintenance(String status) {
         return this.client.executeSync(this.systemMarketAPI.getMaintenance(status));
     }
-
 
 }

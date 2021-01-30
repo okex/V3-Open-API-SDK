@@ -13,6 +13,15 @@ public class Product {
     private String base_increment;
     private String quote_increment;
     private String instrument_id;
+    private String category;
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
 
     public String getInstrument_id() {
         return this.instrument_id;

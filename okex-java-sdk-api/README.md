@@ -67,24 +67,24 @@ public class TestOKEXOpenApiV3 {
 }
 
 
- 2.新手教程：
-====
+```
+### 4.新手教程：
+```
 
-##### 第一步：下载并安装jdk、jre以及maven，搭建本地maven仓库
+第一步：下载并安装jdk、jre以及maven，搭建本地maven仓库
 
-##### 第二步：配置环境变量<br>
-	1 配置jdk，jre，maven的环境变量(可参考网上的配置教程)
+第二步：配置环境变量
+2.1 配置jdk，jre，maven的环境变量
 
-##### 第三步：在IDEA中配置jdk以及maven
+第三步：在IDEA中配置jdk以及maven
 
-##### 第四步：导入SDK，下载所需的maven依赖<br>
-	1 将SDK导入到IDEA中，下载所需要的maven依赖(首次加载maven所需时间比较长)
-	2 然后将resources文件标记为Test resources root
+第四步：导入SDK，下载所需的maven依赖
+4.1 将SDK导入到IDEA中，下载所需要的maven依赖
 
-##### 第五步：配置自己的API key<br>
-	1 首先需要在OKEx官网申请API key
-	2 将各项参数在相关文件中进行替换(Rest接口在对应的BaseTest类中替换，WS在WebSocketConfig类中替换)
+第五步：配置自己的API key
+5.1 先去OKEx官网申请API key
+5.2 将各项参数在相关文件中进行替换（Rest接口在对应的BaseTest类中替换，WS在WebSocketConfig类中替换）
 
-##### 第六步：调用接口<br>
-	1 调用Rest接口，运行对应Test类中的Junit单元测试
-	2 订阅WS频道，运行对应的Test类中的Junit单元测试
+第六步：调用接口
+6.1 调用Rest接口，运行对应Test类中的Junit单元测试
+6.2 订阅WS频道，运行对应的Test类中的Junit单元测试

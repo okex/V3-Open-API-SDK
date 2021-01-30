@@ -2,69 +2,33 @@ package com.okcoin.commons.okex.open.api.service.spot;
 
 import com.alibaba.fastjson.JSONArray;
 import com.okcoin.commons.okex.open.api.bean.spot.result.*;
+import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 import java.math.BigDecimal;
 import java.util.List;
 
 public interface SpotProductAPIService {
 
-    /**
-     * 单个币对行情
-     *
-     * @param instrument_id
-     * @return
-     */
-    Ticker getTickerByProductId(String instrument_id);
+    //公共-获取币对信息
+    List<Product> getInstruments();
 
-    /**
-     *
-     * 行情列表
-     *
-     * @return
-     */
-    //List<Ticker> getTickers();
-    String getTickers();
+    //公共-获取深度数据
+    Book bookProductsByInstrumentId(String instrument_id, String size, String depth);
 
-    List<Ticker> getTickers1();
+    //公共-获取全部ticker信息
+    List<Ticker> getTickers();
 
-    /**
-     * @param instrument_id
-     * @param size
-     * @param depth
-     * @return
-     */
-    Book bookProductsByProductId(String instrument_id, String size, String depth);
+    //公共-获取某个ticker信息
+    Ticker getTickerByInstrumentId(String instrument_id);
 
-    /**
-     * 币对列表S
-     *
-     * @return
-     */
-    List<Product> getProducts();
+    //公共-获取成交数据
+    List<Trade> getTradesByInstrumentId(String instrument_id, String limit);
 
-    /**
-     * 交易列表
-     *
-     * @param instrument_id
-     * @param limit
-     * @return
-     */
-    List<Trade> getTrades(String instrument_id, String limit);
+    //公共-获取K线数据
+    JSONArray getCandlesByInstrumentId(String instrument_id, String start, String end, String granularity);
 
-    /**
-     * @param instrument_id
-     * @param granularity
-     * @param start
-     * @param end
-     * @return
-     */
-
-    JSONArray getCandles(String instrument_id, String granularity, String start, String end);
-
-    JSONArray getHistoryCandles(String instrument_id, String granularity, String start, String end);
-
-
-
-
+    //公共-获取历史K线数据
+    JSONArray getHistoryCandlesByInstrumentId(String instrument_id, String start, String end, String granularity, String limit);
 
 }

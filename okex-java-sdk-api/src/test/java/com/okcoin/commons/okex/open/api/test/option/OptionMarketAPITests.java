@@ -19,118 +19,94 @@ public class OptionMarketAPITests extends OptionAPIBaseTests{
         config = config();
         marketAPIService = new OptionMarketAPIServiceImpl(config);
     }
-    /***
+
+    /**
      * 公共-获取标的指数
-     * 获取期权交易已支持的标的指数列表。
-     * 限速规则：20次/2s
-     * HTTP请求
      * GET /api/option/v3/underlying
-     * */
+     */
     @Test
     public void testGetUnderlying(){
         JSONArray result = marketAPIService.getUnderlying();
         toResultString(LOG,"result",result);
     }
-    /***
+
+    /**
      * 公共-获取期权合约
-     * 获取可用合约的列表。
-     *
-     * 限速规则：20次/2s
-     * HTTP请求
      * GET /api/option/v3/instruments/<underlying>
-     * */
+     */
     @Test
     public void testGetInstrumrnt(){
-        JSONArray result = marketAPIService.getInstruments("BTC-USD","","");
+        JSONArray result = marketAPIService.getInstruments("BTC-USD",null,null);
         toResultString(LOG,"result",result);
     }
-    /***
+
+    /**
      * 公共-获取期权合约详细定价
-     * 获取同一标的下所有期权合约详细定价。
-     * 限速规则：20次/2s
-     * HTTP请求
      * GET /api/option/v3/instruments/<underlying>/summary
-     * */
+     */
     @Test
     public void testGetAllSummary(){
-        JSONArray result = marketAPIService.getAllSummary("BTC-USD","200925");
+        JSONArray result = marketAPIService.getAllSummary("BTC-USD","201225");
         toResultString(LOG,"",result);
     }
-    /***
+
+    /**
      * 公共-获取单个期权合约详细定价
-     * 获取某个期权合约的详细定价。
-     * 限速规则：20次/2s
-     * HTTP请求
-     * GET /api/option/v3/instruments/<underlying>/summary/<instrument_id>*/
-       //公共-获取单个期权合约的详细定价
+     * GET /api/option/v3/instruments/<underlying>/summary/<instrument_id>
+     */
     @Test
     public void testGetDetailPrice(){
         JSONObject result = marketAPIService.getDetailPrice("BTC-USD","BTC-USD-200925-7000-C");
         toResultString(LOG,"result",result);
     }
+
     /**
      * 公共-获取深度数据
-     * 获取期权合约的深度数据。
-     *
-     * 限速规则：20次/2s
-     * HTTP请求
-     * GET /api/option/v3/instruments/<instrument_id>/book*/
+     * GET /api/option/v3/instruments/<instrument_id>/book
+     */
     @Test
     public void testGetDepthData(){
-        JSONObject result = marketAPIService.getDepthData("BTC-USD-200925-7000-C","10");
+        JSONObject result = marketAPIService.getDepthData("BTC-USD-201225-7000-C","10");
         toResultString(LOG,"result",result);
     }
-    /***
+
+    /**
      * 公共-获取成交数据
-     * 获取期权合约的成交记录。
-     *
-     * 限速规则：20次/2s
-     * HTTP请求
      * GET /api/option/v3/instruments/<instrument_id>/trades
-     * */
+     */
     @Test
     public void testGetTradeList(){
-        JSONArray result = marketAPIService.getTradeList("BTC-USD-200925-7000-C","","","");
+        JSONArray result = marketAPIService.getTradeList("BTC-USD-201225-7000-C",null,null,"10");
         toResultString(LOG,"",result);
     }
 
-    /***
+    /**
      * 公共-获取某个Ticker信息
-     * 获取某个期权合约的最新成交价、买一价、卖一价和对应的量。
-     *
-     * 限速规则：20次/2s
-     * HTTP请求
      * GET /api/option/v3/instruments/<instrument_id>/ticker
-     * */
+     */
     @Test
     public void testGetTicker(){
-        JSONObject result = marketAPIService.getTicker("BTC-USD-200925-7000-C");
+        JSONObject result = marketAPIService.getTicker("BTC-USD-201225-7000-C");
         toResultString(LOG,"result",result);
     }
-    /***
-     *公共-获取K线数据
-     * 获取期权合约的K线数据。
-     * 限速规则：20次/2s
-     * HTTP请求
+
+    /**
+     * 公共-获取K线数据
      * GET /api/option/v3/instruments/<instrument_id>/candles
-     * */
+     */
     @Test
     public void testGetCandles(){
-        JSONArray result = marketAPIService.getCandles("BTC-USD-200925-7000-C",null,null,"60");
+        JSONArray result = marketAPIService.getCandles("BTC-USD-201225-7000-C",null,null,"60");
         toResultString(LOG,"result",result);
     }
 
-
-    /***
+    /**
      *公共-获取历史结算/行权记录
-     * 获取历史结算/行权记录。
-     * 限速规则：1次/10s
-     * HTTP请求
      * GET /api/option/v3/settlement/history/<underlying>
-     * */
+     */
     @Test
     public void testGetHistorySettlement(){
-        JSONArray result = marketAPIService.getHistorySettlement("BTC-USD");
+        JSONArray result = marketAPIService.getHistorySettlement("BTC-USD",null,"10",null);
         toResultString(LOG,"result",result);
     }
 }

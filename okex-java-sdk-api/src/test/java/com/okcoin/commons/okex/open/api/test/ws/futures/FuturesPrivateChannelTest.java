@@ -43,7 +43,7 @@ public class FuturesPrivateChannelTest {
     @After
     public void close() {
         System.out.println(Instant.now().toString() + " close connect!");
-        webSocketClient.closeConnection();
+        WebSocketClient.closeConnection();
     }
 
     /**
@@ -53,16 +53,14 @@ public class FuturesPrivateChannelTest {
     @Test
     public void positionChannel() {
         ArrayList<String> channel = Lists.newArrayList();
-//        channel.add("futures/position:MNBTC-USD-200925");
-        channel.add("futures/position:BTC-USD-200925");
-//        channel.add("futures/ticker:BTC-USDT-200626");
+        channel.add("futures/position:BTC-USDT-201225");
         try {
             Thread.sleep(100);
         } catch (Exception e) {
             e.printStackTrace();
         }
         //订阅
-        webSocketClient.subscribe(channel);
+        WebSocketClient.subscribe(channel);
         //为保证测试方法不停，需要让线程延迟
         try {
             Thread.sleep(10000000);
@@ -85,7 +83,7 @@ public class FuturesPrivateChannelTest {
             e.printStackTrace();
         }
         //订阅
-        webSocketClient.subscribe(channel);
+        WebSocketClient.subscribe(channel);
         //为保证测试方法不停，需要让线程延迟
         try {
             Thread.sleep(10000000);
@@ -101,16 +99,14 @@ public class FuturesPrivateChannelTest {
     @Test
     public void orderChannel() {
         ArrayList<String> channel = Lists.newArrayList();
-        channel.add("futures/order:BTC-USD-200925");
-        //channel.add("futures/order:BTC-USD-200320");
-
+        channel.add("futures/order:XRP-USDT-201225");
         try {
             Thread.sleep(100);
         } catch (Exception e) {
             e.printStackTrace();
         }
         //订阅
-        webSocketClient.subscribe(channel);
+        WebSocketClient.subscribe(channel);
         //为保证测试方法不停，需要让线程延迟
         try {
             Thread.sleep(10000000);
@@ -119,7 +115,6 @@ public class FuturesPrivateChannelTest {
         }
     }
 
-
     /**
      * 用户委托策略频道
      * futures/order_algo
@@ -127,14 +122,14 @@ public class FuturesPrivateChannelTest {
     @Test
     public void algoOrderChannel() {
         ArrayList<String> channel = Lists.newArrayList();
-        channel.add("futures/order_algo:BTC-USD-200925");
+        channel.add("futures/order_algo:BTC-USDT-201225");
         try {
             Thread.sleep(100);
         } catch (Exception e) {
             e.printStackTrace();
         }
         //订阅
-        webSocketClient.subscribe(channel);
+        WebSocketClient.subscribe(channel);
         //为保证测试方法不停，需要让线程延迟
         try {
             Thread.sleep(10000000);
@@ -147,12 +142,14 @@ public class FuturesPrivateChannelTest {
     @Test
     public void unsubscribeChannel() {
         ArrayList<String> channel = Lists.newArrayList();
-        channel.add("futures/order:BTC-USDT-200925");
+        channel.add("futures/order:BTC-USDT-201225");
         try {
             Thread.sleep(100);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        //订阅
+        webSocketClient.subscribe(channel);
         //取消订阅
         webSocketClient.unsubscribe(channel);
         //为保证测试方法不停，需要让线程延迟

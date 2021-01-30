@@ -20,219 +20,211 @@ public class OptionTradeAPITests extends OptionAPIBaseTests{
 
     private OptionTradeAPIService tradeAPIService;
 
-
     @Before
     public void before() {
         config = config();
         tradeAPIService = new OptionTradeAPIServiceImpl(config);
     }
 
-    /***
+    /**
      * 单个标的指数持仓信息
-     * 获取某个标的下的持仓信息
-     *
-     * 限速规则：20次/2s
-     * HTTP请求
      * GET /api/option/v3/<underlying>/position
-     *
-     * **/
+     */
     @Test
     public void testGetPosition(){
-        JSONObject result = tradeAPIService.getPosition("BTC-USD","BTC-USD-200925-7000-C");
+        JSONObject result = tradeAPIService.getPosition("BTC-USD","BTC-USD-201225-7000-P");
         toResultString(LOG,"result",result);
     }
 
-
-    /***
+    /**
      * 单个标的物账户信息
-     * 获取单个标的物账户信息。
-     *
-     * 限速规则：20次/2s
-     * HTTP请求
      * GET /api/option/v3/accounts/<underlying>
-     * **/
+     */
     @Test
     public void testGetAccount(){
         JSONObject result = tradeAPIService.getAccount("BTC-USD");
         toResultString(LOG, "Accounts", result);
     }
-    /****
-     * 下单
-     * 限速规则：20次/s
-     * HTTP请求
-     * POST /api/option/v3/order
-     * */
 
+    /**
+     * 下单
+     * POST /api/option/v3/order
+     */
     @Test
-    public void testGetOrder(){
+    public void testPlaceOrder(){
         OrderParam param = new OrderParam();
         param.setClient_oid("testoption01");
         param.setInstrument_id("BTC-USD-201225-11500-C");
-        param.setPrice("0.001497");
         param.setSide("sell");
-        param.setSize("1");
         param.setOrder_type("0");
+        param.setPrice("0.001497");
+        param.setSize("1");
         param.setMatch_price("0");
 
-        JSONObject result = tradeAPIService.getOrder(param);
+        JSONObject result = tradeAPIService.placeOrder(param);
         toResultString(LOG,"result",result);
     }
 
-    /***
+    /**
      *  批量下单
-     * 批量进行下单请求，每个标的指数最多可批量下10个单。
-     *
-     * 限速规则：20次/2s
-     * HTTP请求
      * POST /api/option/v3/orders
-     * **/
+     */
     @Test
-    public void testGetOrders1(){
+    public void testPlaceOrders(){
         OrderDataParam orderDataParam = new OrderDataParam();
         orderDataParam.setUnderlying("BTC-USD");
 
         OrderParam orderParam = new OrderParam();
         orderParam.setClient_oid("");
         orderParam.setInstrument_id("BTC-USD-200925-7500-C");
+        orderParam.setSide("buy");
+        orderParam.setOrder_type("0");
         orderParam.setPrice("0.0005");
         orderParam.setSize("1");
-        orderParam.setSide("buy");
         orderParam.setMatch_price("0");
-        orderParam.setOrder_type("0");
 
         OrderParam orderParam1 = new OrderParam();
         orderParam1.setClient_oid("");
         orderParam1.setInstrument_id("BTC-USD-2000925-7500-C");
+        orderParam1.setSide("buy");
+        orderParam1.setOrder_type("0");
         orderParam1.setPrice("0.001");
         orderParam1.setSize("1");
-        orderParam1.setSide("buy");
         orderParam1.setMatch_price("0");
-        orderParam1.setOrder_type("0");
 
         List<OrderParam> list = new ArrayList();
         list.add(orderParam);
         list.add(orderParam1);
         orderDataParam.setOrderdata(list);
 
-        JSONObject result = tradeAPIService.getOrders1(orderDataParam);
+        JSONObject result = tradeAPIService.placeOrders(orderDataParam);
         toResultString(LOG,"result",result);
 
     }
-    /***
+
+    /**
      * 撤单
-     * 撤销之前下的未完成订单。
-     *
-     * 限速规则：20次/s
-     * HTTP请求
-     * POST /api/option/v3/cancel_order/<underlying>/<order_id or client_oid>
-     * ***/
-    //撤单
+     * POST /api/option/v3/cancel_order/<underlying>/<order_id>
+     */
     @Test
-    public void testCancelOrders(){
-        JSONObject result = tradeAPIService.cancelOrders("BTC-USD","127775390743711744");
+    public void testCancelOrderByOrderId(){
+        JSONObject result = tradeAPIService.cancelOrderByOrderId("BTC-USD","127775390743711744");
         toResultString(LOG,"result",result);
     }
 
-    //根据client_oid撤单
+    /**
+     * 撤单
+     * POST /api/option/v3/cancel_order/<underlying>/<client_oid>
+     */
     @Test
-    public void testCancelOrdersByClientOid(){
-        JSONObject result = tradeAPIService.cancelOrderByClientOid("BTC-USD","option0925teset1");
+    public void testCancelOrderByClientOid(){
+        JSONObject result = tradeAPIService.cancelOrderByClientOid("BTC-USD","option0326teset1");
         toResultString(LOG,"result",result);
     }
-    /***
-     *批量撤单
-     * 批量撤销之前下的未完成订单，每个标的指数最多可批量撤10个单。
-     * 限速规则：20次/2s
-     * HTTP请求
-     * POST /api/option/v3/cancel_batch_orders/<underlying>
-     * */
-    //批量撤单
+
+    /**
+     * 撤销全部订单
+     * POST /api/option/v3/cancel_all/<underlying>
+     */
     @Test
-    public void testCancelBantchOrders(){
+    public void testCancalAll(){
+        JSONObject result = tradeAPIService.cancelAll("BTC-USD");
+        toResultString(LOG,"result",result);
+    }
+
+    /**
+     * 批量撤单(通过order_id)
+     * POST /api/option/v3/cancel_batch_orders/<underlying>
+     */
+    @Test
+    public void testCancelBantchOrdersByOrderId(){
         CancelOrders cancelOrders = new CancelOrders();
         List<String> list = new ArrayList<>();
-        //根据order_id进行批量撤单
+
         list.add("125243617098915840");
         list.add("125243617098915841");
         cancelOrders.setOrder_ids(list);
 
-        //根据client_oid进行批量撤单
-     /*   list.add("cttoption1212testttc1");
-        list.add("cttoption1212testttc2");
-        cancelOrders.setClient_oids(list);*/
-
-
-        JSONObject result = tradeAPIService.cancelBatchOrders("BTC-USD",cancelOrders);
+        JSONObject result = tradeAPIService.cancelBatchOrdersByOrderId("BTC-USD",cancelOrders);
         toResultString(LOG,"result",result);
     }
 
-    /***
-     *修改订单
-     * 修改之前下的未完成订单。
-     *
-     * 限速规则：20次/s
-     * HTTP请求
-     * POST /api/option/v3/amend_order/<underlying>
-     *
+    /**
+     * 批量撤单（通过client_oid）
+     * POST /api/option/v3/cancel_batch_orders/<underlying>
      */
     @Test
-    public void testAmendOrder(){
+    public void testCancelBantchOrdersByClientOid(){
+        CancelOrders cancelOrders = new CancelOrders();
+        List<String> list = new ArrayList<>();
+
+        list.add("testoption1");
+        list.add("testoption1");
+        cancelOrders.setClient_oids(list);
+
+        JSONObject result = tradeAPIService.cancelBatchOrdersByClientOid("BTC-USD",cancelOrders);
+        toResultString(LOG,"result",result);
+    }
+
+    /**
+     *修改订单(通过order_id)
+     * POST /api/option/v3/amend_order/<underlying>
+     */
+    @Test
+    public void testAmendOrderByOrderId(){
         AmentDate amentDate = new AmentDate();
-        //根据order_id进行修改
+
         amentDate.setCancel_on_fail("");
         amentDate.setRequest_id("");
         amentDate.setOrder_id("158444945847922688");
         amentDate.setNew_size("2");
         amentDate.setNew_price("0.001");
 
-        //根据client_oid进行修改
-        /*amentDate.setCancel_on_fail("");
+        JSONObject result = tradeAPIService.amendOrderByOrderId("BTC-USD",amentDate);
+        toResultString(LOG,"result",result);
+    }
+
+    /**
+     *修改订单（通过client_oid）
+     * POST /api/option/v3/amend_order/<underlying>
+     */
+    @Test
+    public void testAmendOrderByClientOid(){
+        AmentDate amentDate = new AmentDate();
+
+        amentDate.setCancel_on_fail("");
         amentDate.setRequest_id("");
         amentDate.setClient_oid("");
         amentDate.setNew_size("2");
-        amentDate.setNew_price("0.0005");*/
+        amentDate.setNew_price("0.0005");
 
-
-        JSONObject result = tradeAPIService.amendOrder("BTC-USD",amentDate);
+        JSONObject result = tradeAPIService.amendOrderByClientOid("BTC-USD",amentDate);
         toResultString(LOG,"result",result);
     }
-    /***
-     * 批量修改订单
-     * 修改之前下的未完成订单，每个标的指数最多可批量修改10个单。
-     *
-     * 限速规则：20次/2s
-     * HTTP请求
+
+    /**
+     * 批量修改订单(通过order_id)
      * POST /api/option/v3/amend_batch_orders/<underlying>
-     * **/
-
+     */
     @Test
-    public void testAmendBatchOrders(){
+    public void testAmendBatchOrdersByOrderId(){
         AmendDateParam param = new AmendDateParam();
+
         AmentDate amentDate = new AmentDate();
+
         amentDate.setCancel_on_fail("");
-
-        //根据order_id修改
-        /*amentDate.setOrder_id("158444945847922688");*/
-
-        //根据client_oid修改
-        amentDate.setClient_oid("");
-
+        amentDate.setOrder_id("");
         amentDate.setRequest_id("");
-        amentDate.setNew_size("1");
-        amentDate.setNew_price("0.001");
+        amentDate.setNew_size("");
+        amentDate.setNew_price("");
 
         AmentDate amentDate1 = new AmentDate();
+
         amentDate1.setCancel_on_fail("");
-        //根据order_id修改
-        /*amentDate1.setOrder_id("158444945847922689");*/
-
-        //根据client_oid修改
-        amentDate1.setClient_oid("");
-
+        amentDate1.setOrder_id("");
         amentDate1.setRequest_id("");
-        amentDate1.setNew_size("2");
-        amentDate1.setNew_price("0.001");
-
+        amentDate1.setNew_size("");
+        amentDate1.setNew_price("");
 
         List<AmentDate> list = new ArrayList<>();
         list.add(amentDate);
@@ -240,95 +232,101 @@ public class OptionTradeAPITests extends OptionAPIBaseTests{
 
         param.setAmend_data(list);
 
-        JSONObject result = tradeAPIService.amendBatchOrders("BTC-USD",param);
+        JSONObject result = tradeAPIService.amendBatchOrdersByOrderId("BTC-USD",param);
         toResultString(LOG,"result",result);
     }
 
-    /***
-     * 获取单个订单状态
-     * 查询单个订单状态。已撤销的未成交单只保留2个小时。
-     *
-     * 限速规则：40次/2s
-     * HTTP请求
-     * GET /api/option/v3/orders/<underlying>/<order_id or client_oid>
-     *
-     * **/
-    //根据order_id获取
+    /**
+     * 批量修改订单（通过client_oid）
+     * POST /api/option/v3/amend_batch_orders/<underlying>
+     */
     @Test
-    public void testGetOrderInfo(){
-        JSONObject result = tradeAPIService.getOrderInfo("BTC-USD","136805624537206784");
+    public void testAmendBatchOrdersByClientOid(){
+        AmendDateParam param = new AmendDateParam();
+
+        AmentDate amentDate = new AmentDate();
+
+        amentDate.setCancel_on_fail("");
+        amentDate.setClient_oid("");
+        amentDate.setRequest_id("");
+        amentDate.setNew_size("1");
+        amentDate.setNew_price("0.001");
+
+        AmentDate amentDate1 = new AmentDate();
+
+        amentDate1.setCancel_on_fail("");
+        amentDate1.setClient_oid("");
+        amentDate1.setRequest_id("");
+        amentDate1.setNew_size("2");
+        amentDate1.setNew_price("0.001");
+
+        List<AmentDate> list = new ArrayList<>();
+        list.add(amentDate);
+        list.add(amentDate1);
+
+        param.setAmend_data(list);
+        JSONObject result = tradeAPIService.amendBatchOrdersByClientOid("BTC-USD",param);
         toResultString(LOG,"result",result);
     }
-    //根据 client_oid 获取
+
+    /**
+     * 获取单个订单状态(通过order_id)
+     * GET /api/option/v3/orders/<underlying>/<order_id>
+     */
+    @Test
+    public void testGetOrderInfoByOrderId(){
+        JSONObject result = tradeAPIService.getOrderInfoByOrderId("BTC-USD","136805624537206784");
+        toResultString(LOG,"result",result);
+    }
+
+    /**
+     * 获取单个订单状态(通过client_oid)
+     * GET /api/option/v3/orders/<underlying>/<client_oid>
+     */
     @Test
     public void testGetOrderInfoByClientOid(){
         JSONObject result = tradeAPIService.getOrderInfoByClientOid("BTC-USD","option0212teset1");
         toResultString(LOG,"result",result);
     }
-    /***
+
+    /**
      * 获取订单列表
-     * 获取当前所有的订单列表。本接口能查询7天内数据。
-     *
-     * 限速规则：20次/2s
-     * HTTP请求
      * GET /api/option/v3/orders/<underlying>
-     *
-     * */
+     */
     @Test
     public void testGetOrderList(){
-        JSONObject result = tradeAPIService.getOrderList("BTC-USD","0","BTC-USD-201225-7000-P","","","");
+        JSONObject result = tradeAPIService.getOrderList("BTC-USD",null,null,null,null,"-1");
         toResultString(LOG,"result",result);
     }
 
-    /***
+    /**
      * 获取成交明细
-     * 获取最近的成交明细列表。本接口能查询7天内数据。
-     *
-     * 限速规则：20次/2s
-     * HTTP请求
      * GET /api/option/v3/fills/<underlying>
-     * **/
+     */
     @Test
     public void testGetFills(){
-        JSONArray result = tradeAPIService.getFills("BTC-USD","","","","","");
+        JSONArray result = tradeAPIService.getFills("BTC-USD",null,null,null,null,null);
         toResultString(LOG,"result",result);
     }
 
-    /***
-     *获取账单流水
-     * 列出账户资产流水，账户资产流水是指导致账户余额增加或减少的行为。流水会分页，每页100条数据，并且按照时间倒序排序和存储，最新的排在最前面。 本接口能查询最近7天的数据。
-     *
-     * 限速规则：5次/2s
-     * HTTP请求
+    /**
+     * 获取账单流水
      * GET /api/option/v3/accounts/<underlying>/ledger
-     * */
+     */
     @Test
     public void testGetLedger(){
-        JSONArray result = tradeAPIService.getLedger("BTC-USD","","","");
+        JSONArray result = tradeAPIService.getLedger("BTC-USD",null,null,null);
         toResultString(LOG,"result",result);
-
     }
-    /***
-     *获取手续费费率
-     * 获取当前账户交易等级对应的手续费费率，母账户下的子账户的费率和母账户一致（每天凌晨0点更新）。
-     *
-     * 限速规则：1次/10s
-     * HTTP请求
+
+    /**
+     * 获取手续费费率
      * GET /api/option/v3/trade_fee
-     * */
+     */
     @Test
     public void testGetTradeFee(){
-        JSONObject result = tradeAPIService.getTradeFee();
+        JSONObject result = tradeAPIService.getTradeFee(null,"BTC-USD");
         toResultString(LOG,"result",result);
     }
-
-
-
-
-
-
-
-
-
 
 }

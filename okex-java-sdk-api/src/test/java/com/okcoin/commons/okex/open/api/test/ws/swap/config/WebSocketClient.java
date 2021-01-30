@@ -133,7 +133,7 @@ public class WebSocketClient {
                         System.out.println("名称："+instrumentId+",拆分要校验的字符串：" + str);
                         int checksum = checksum(bookdiff.getAsks(), bookdiff.getBids());
                         System.out.println("名称："+instrumentId+",校验的checksum:" + checksum);
-                        boolean flag = checksum==bookdiff.getChecksum()?true:false;
+                        boolean flag = checksum == bookdiff.getChecksum();
                         if(flag){
                             System.out.println("名称："+instrumentId+",深度校验结果为："+flag);
                             oldBook = parse(bookdiff.toString());
@@ -278,13 +278,13 @@ public class WebSocketClient {
         StringBuilder s = new StringBuilder();
         for (int i = 0; i < 25; i++) {
             if (i < bids.size()) {
-                s.append(bids.get(i).getPrice().toString());
+                s.append(bids.get(i).getPrice());
                 s.append(":");
                 s.append(bids.get(i).getSize());
                 s.append(":");
             }
             if (i < asks.size()) {
-                s.append(asks.get(i).getPrice().toString());
+                s.append(asks.get(i).getPrice());
                 s.append(":");
                 s.append(asks.get(i).getSize());
                 s.append(":");
@@ -304,13 +304,13 @@ public class WebSocketClient {
         StringBuilder s = new StringBuilder();
         for (int i = 0; i < 25; i++) {
             if (i < bids.size()) {
-                s.append(bids.get(i).getPrice().toString());
+                s.append(bids.get(i).getPrice());
                 s.append(":");
                 s.append(bids.get(i).getSize());
                 s.append(":");
             }
             if (i < asks.size()) {
-                s.append(asks.get(i).getPrice().toString());
+                s.append(asks.get(i).getPrice());
                 s.append(":");
                 s.append(asks.get(i).getSize());
                 s.append(":");
@@ -330,11 +330,11 @@ public class WebSocketClient {
         try {
             com.okcoin.commons.okex.open.api.test.ws.futures.config.WebSocketClient.OrderBookData data = objectReader.readValue(json);
             List<SpotOrderBookItem> asks =
-                    data.getAsks().stream().map(x -> new SpotOrderBookItem(new String(x.get(0)), x.get(1), x.get(2)))
+                    data.getAsks().stream().map(x -> new SpotOrderBookItem(x.get(0), x.get(1), x.get(2)))
                             .collect(Collectors.toList());
 
             List<SpotOrderBookItem> bids =
-                    data.getBids().stream().map(x -> new SpotOrderBookItem(new String(x.get(0)), x.get(1), x.get(2)))
+                    data.getBids().stream().map(x -> new SpotOrderBookItem(x.get(0), x.get(1), x.get(2)))
                             .collect(Collectors.toList());
 
             return Optional.of(new SpotOrderBook(data.getInstrument_id(), asks, bids, data.getTimestamp(),data.getChecksum()));

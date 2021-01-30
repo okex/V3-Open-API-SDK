@@ -3,6 +3,7 @@ package com.okcoin.commons.okex.open.api.service.account.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.okcoin.commons.okex.open.api.bean.account.param.PurchaseRedempt;
 import com.okcoin.commons.okex.open.api.bean.account.param.Transfer;
 import com.okcoin.commons.okex.open.api.bean.account.param.Withdraw;
 import com.okcoin.commons.okex.open.api.bean.account.result.Currency;
@@ -26,97 +27,94 @@ public class AccountAPIServiceImpl implements AccountAPIService {
         this.api = client.createService(AccountAPI.class);
     }
 
-
+    //资金账户信息
     @Override
     public List<Wallet> getWallet() {
         return this.client.executeSync(this.api.getWallet());
     }
 
+    //单一币种账户信息
     @Override
     public List<Wallet> getWallet(String currency) {
         return this.client.executeSync(this.api.getWallet(currency));
     }
 
-
+    //资金划转
     @Override
     public JSONObject transfer(Transfer transfer) {
         return this.client.executeSync(this.api.transfer(JSONObject.parseObject(JSON.toJSONString(transfer))));
     }
 
+    //提币
     @Override
     public JSONObject withdraw(Withdraw withdraw) {
         return this.client.executeSync(this.api.withdraw(JSONObject.parseObject(JSON.toJSONString(withdraw))));
     }
 
+    //账单流水查询
     @Override
-    public List<Currency> getCurrencies() {
-        return this.client.executeSync(this.api.getCurrencies());
+    public JSONArray getLedger(String currency, String after, String before, String limit, String type) {
+        return this.client.executeSync(this.api.getLedger(currency, after, before, limit, type));
     }
 
-    //String currency,
-    @Override
-    public JSONArray getLedger(String type, String currency,  String before, String after, String limit) {
-        return this.client.executeSync(this.api.getLedger(type, currency, before, after, limit));
-    }
-
+    //获取充值地址
     @Override
     public JSONArray getDepositAddress(String currency) {
         return this.client.executeSync(this.api.getDepositAddress(currency));
     }
 
+    //获取账户资产估值
     @Override
-    public List<WithdrawFee> getWithdrawFee(String currency) {
-        return this.client.executeSync(this.api.getWithdrawFee(currency));
+    public JSONObject getAllAccount(String account_type, String valuation_currency) {
+        return this.client.executeSync(this.api.getAllAccount(account_type,valuation_currency));
     }
 
+    //获取子账户余额
     @Override
-    public JSONArray getOnHold(String currency) {
-        return this.client.executeSync(this.api.getOnHold(currency));
+    public String getSubAccount(String sub_account) {
+        return this.client.executeSync(this.api.getSubAccount(sub_account));
     }
 
-    @Override
-    public JSONObject lock(String currency, BigDecimal amount) {
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("currency", currency);
-        jsonObject.put("size", amount);
-        return this.client.executeSync(this.api.lock(jsonObject));
-    }
-
-    @Override
-    public JSONObject unlock(String currency, BigDecimal amount) {
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("currency", currency);
-        jsonObject.put("size", amount);
-        return this.client.executeSync(this.api.unlock(jsonObject));
-    }
-
-    @Override
-    public JSONArray getDepositHistory() {
-        return this.client.executeSync(this.api.getDepositHistory());
-    }
-
-    @Override
-    public JSONArray getDepositHistory(String currency) {
-        return this.client.executeSync(this.api.getDepositHistory(currency));
-    }
-   //查询所有提币记录
+    //查询所有币种提币记录
     @Override
     public JSONArray getWithdrawalHistory() {
         return this.client.executeSync(this.api.getWithdrawalHistory());
     }
-    //查询单个提币记录
+
+    //查询单个币种提币记录
     @Override
     public JSONArray getWithdrawalHistory(String currency) {
         return this.client.executeSync(this.api.getWithdrawalHistory(currency));
     }
 
+    //获取所有币种充值记录
     @Override
-    public JSONObject getSubAccount(String sub_account) {
-        return this.client.executeSync(this.api.getSubAccount(sub_account));
+    public String getDepositHistory() {
+        return this.client.executeSync(this.api.getDepositHistory());
     }
 
+    //获取单个币种充值记录
     @Override
-    public JSONObject getAllAccount(String account_type, String valuation_currency) {
-        return this.client.executeSync(this.api.getAllAccount(account_type,valuation_currency));
+    public String getDepositHistory(String currency) {
+        return this.client.executeSync(this.api.getDepositHistory(currency));
     }
+
+    //获取币种列表
+    @Override
+    public List<Currency> getCurrencies() {
+        return this.client.executeSync(this.api.getCurrencies());
+    }
+
+    //提币手续费
+    @Override
+    public List<WithdrawFee> getWithdrawFee(String currency) {
+        return this.client.executeSync(this.api.getWithdrawFee(currency));
+    }
+
+    //余币宝申购赎回
+    @Override
+    public JSONObject purchaseRedempt(PurchaseRedempt purchaseRedempt) {
+        return this.client.executeSync(this.api.purchaseRedempt(JSONObject.parseObject(JSON.toJSONString(purchaseRedempt))));
+    }
+
 }

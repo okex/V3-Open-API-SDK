@@ -44,7 +44,7 @@ public class OptionPrivateChannelTest {
     @After
     public void close() {
         System.out.println(Instant.now().toString() + " close connect!");
-        webSocketClient.closeConnection();
+        WebSocketClient.closeConnection();
     }
 
     /**
@@ -61,7 +61,7 @@ public class OptionPrivateChannelTest {
             e.printStackTrace();
         }
         //订阅
-        webSocketClient.subscribe(channel);
+        WebSocketClient.subscribe(channel);
         //为保证测试方法不停，需要让线程延迟
         try {
             Thread.sleep(10000000);
@@ -84,7 +84,7 @@ public class OptionPrivateChannelTest {
             e.printStackTrace();
         }
         //订阅
-        webSocketClient.subscribe(channel);
+        WebSocketClient.subscribe(channel);
         //为保证测试方法不停，需要让线程延迟
         try {
             Thread.sleep(10000000);
@@ -107,7 +107,7 @@ public class OptionPrivateChannelTest {
             e.printStackTrace();
         }
         //订阅
-        webSocketClient.subscribe(channel);
+        WebSocketClient.subscribe(channel);
         //为保证测试方法不停，需要让线程延迟
         try {
             Thread.sleep(10000000);
@@ -120,14 +120,14 @@ public class OptionPrivateChannelTest {
     @Test
     public void unsubscribeChannel() {
         ArrayList<String> channel = Lists.newArrayList();
-        channel.add("option/order:");
+        channel.add("option/order:BTC-USD");
         try {
             Thread.sleep(100);
         } catch (Exception e) {
             e.printStackTrace();
         }
         //取消订阅
-        webSocketClient.unsubscribe(channel);
+        WebSocketClient.unsubscribe(channel);
         //为保证测试方法不停，需要让线程延迟
         try {
             Thread.sleep(1000);

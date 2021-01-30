@@ -15,49 +15,58 @@ public class OptionMarketAPIServiceImpl implements OptionMarketAPIService {
         this.api = client.createService(OptionMarketAPI.class);
     }
 
-
-    @Override
-    public JSONObject getDepthData(String instrument_id, String size) {
-        return this.client.executeSync(this.api.getDepthData(instrument_id,size));
-    }
-    @Override
-    public JSONArray getInstruments(String underlying, String delivery, String instrument_id) {
-        return this.client.executeSync(this.api.getInstruments(underlying,delivery,instrument_id));
-    }
-
-    @Override
-    public JSONArray getTradeList(String instrument_id, String before, String after, String limit) {
-        return this.client.executeSync(this.api.getTradeList(instrument_id,before,after,limit));
-    }
-
-    @Override
-    public JSONArray getAllSummary(String underlying, String delivery) {
-        return this.client.executeSync(this.api.getAllSummary(underlying,delivery));
-    }
-
-    @Override
-    public JSONObject getDetailPrice(String underlying, String instrument_id) {
-        return this.client.executeSync(this.api.getDetailPrice(underlying, instrument_id));
-    }
-
-    @Override
-    public JSONArray getCandles(String instrument_id,String start,String end,String granularity) {
-        return this.client.executeSync(this.api.getCandles(instrument_id,start,end,granularity));
-    }
-
-    @Override
-    public JSONObject getTicker(String instrument_id) {
-        return this.client.executeSync(this.api.getTicker(instrument_id));
-    }
-
+    //公共-获取标的指数
     @Override
     public JSONArray getUnderlying() {
         return this.client.executeSync(this.api.getUnderlying());
     }
 
+    //公共-获取期权合约
     @Override
-    public JSONArray getHistorySettlement(String underlying) {
-        return this.client.executeSync(this.api.getHistorySettlement(underlying));
+    public JSONArray getInstruments(String underlying, String delivery, String instrument_id) {
+        return this.client.executeSync(this.api.getInstruments(underlying,delivery,instrument_id));
+    }
+
+    //公共-获取期权合约详细定价
+    @Override
+    public JSONArray getAllSummary(String underlying, String delivery) {
+        return this.client.executeSync(this.api.getAllSummary(underlying,delivery));
+    }
+
+    //公共-获取单个期权合约详细定价
+    @Override
+    public JSONObject getDetailPrice(String underlying, String instrument_id) {
+        return this.client.executeSync(this.api.getDetailPrice(underlying, instrument_id));
+    }
+
+    //公共-获取深度数据
+    @Override
+    public JSONObject getDepthData(String instrument_id, String size) {
+        return this.client.executeSync(this.api.getDepthData(instrument_id,size));
+    }
+
+    //公共-获取成交数据
+    @Override
+    public JSONArray getTradeList(String instrument_id, String after, String before, String limit) {
+        return this.client.executeSync(this.api.getTradeList(instrument_id,after,before,limit));
+    }
+
+    //公共-获取某个Ticker信息
+    @Override
+    public JSONObject getTicker(String instrument_id) {
+        return this.client.executeSync(this.api.getTicker(instrument_id));
+    }
+
+    //公共-获取K线数据
+    @Override
+    public JSONArray getCandles(String instrument_id,String start,String end,String granularity) {
+        return this.client.executeSync(this.api.getCandles(instrument_id,start,end,granularity));
+    }
+
+    //公共-获取历史结算/行权记录
+    @Override
+    public JSONArray getHistorySettlement(String underlying,String start,String limit,String end) {
+        return this.client.executeSync(this.api.getHistorySettlement(underlying,start,limit,end));
     }
 
 

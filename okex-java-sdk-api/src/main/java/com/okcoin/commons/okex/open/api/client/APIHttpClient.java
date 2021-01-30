@@ -7,20 +7,17 @@ import com.okcoin.commons.okex.open.api.enums.HttpHeadersEnum;
 import com.okcoin.commons.okex.open.api.exception.APIException;
 import com.okcoin.commons.okex.open.api.utils.DateUtils;
 import com.okcoin.commons.okex.open.api.utils.HmacSHA256Base64Utils;
-import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.net.Proxy;
-import java.security.InvalidKeyException;
-import java.util.concurrent.TimeUnit;
-import okhttp3.Headers;
-import okhttp3.Interceptor;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
+import okhttp3.*;
 import okio.Buffer;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * API OkHttpClient.
@@ -67,17 +64,13 @@ public class APIHttpClient {
         clientBuilder.readTimeout(this.config.getReadTimeout(), TimeUnit.SECONDS);
         clientBuilder.writeTimeout(this.config.getWriteTimeout(), TimeUnit.SECONDS);
         clientBuilder.retryOnConnectionFailure(this.config.isRetryOnConnectionFailure());
-
-        if (config.getProxyHost() != null)
-            clientBuilder.proxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress(config.getProxyHost() , config.getProxyPort())));
-
         clientBuilder.addInterceptor((Interceptor.Chain chain) -> {
             final Request.Builder requestBuilder = chain.request().newBuilder();
             final String timestamp = DateUtils.getUnixTime();
             //打印首行时间戳
 //            System.out.println("时间戳timestamp={" + timestamp + "}");
-
-            String simulated = "1";
+//              设置模拟盘请求头
+//            String simulated = "1";
             requestBuilder.headers(this.headers(chain.request(), timestamp));
             final Request request = requestBuilder.build();
             if (this.config.isPrint()) {

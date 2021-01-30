@@ -1,11 +1,15 @@
 package com.okcoin.commons.okex.open.api.test.swap;
 
 import com.alibaba.fastjson.JSONObject;
+import com.okcoin.commons.okex.open.api.bean.futures.param.CancelAll;
 import com.okcoin.commons.okex.open.api.bean.swap.param.*;
 import com.okcoin.commons.okex.open.api.bean.swap.result.ApiCancelOrderVO;
+import com.okcoin.commons.okex.open.api.bean.swap.result.ApiOrderResultVO;
+import com.okcoin.commons.okex.open.api.bean.swap.result.ApiOrderVO;
 import com.okcoin.commons.okex.open.api.bean.swap.result.OrderCancelResult;
 import com.okcoin.commons.okex.open.api.service.swap.SwapTradeAPIService;
 import com.okcoin.commons.okex.open.api.service.swap.impl.SwapTradeAPIServiceImpl;
+import com.okcoin.commons.okex.open.api.test.spot.SpotOrderAPITest;
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -28,65 +32,56 @@ public class SwapTradeTest extends SwapBaseTest {
 
     /**
      * 下单
-     * API交易提供限价单下单模式，只有当您的账户有足够的资金才能下单。
-     * 一旦下单，您的账户资金将在订单生命周期内被冻结，被冻结的资金以及数量取决于订单指定的类型和参数。目前api下单只支持以美元为计价单位
      * POST /api/swap/v3/order
-     * 限速规则：40次/2s
-     * {"match_price":"0","size":"1","price":"55","client_oid":"2016TestOrder2","type":"2","instrument_id":"LTC-USD-SWAP","order_type":"0"}
      */
     @Test
     public void order() {
-        PpOrder ppOrder = new PpOrder("testsawp073102", "1", "1", "0","0.242", "XRP-USDT-SWAP","0");
+        PpOrder ppOrder = new PpOrder("1026testswap01", "1", "2", "0","4.5", "DOT-USDT-SWAP","0");
         final  Object apiOrderVO = tradeAPIService.order(ppOrder);
         this.toResultString(SwapTradeTest.LOG, "orders", apiOrderVO);
         System.out.println("jsonObject:"+apiOrderVO);
 
     }
 
-
     /**
      * 批量下单
-     * 批量进行下单请求，每个合约可批量下10个单。
      * POST /api/swap/v3/orders
-     * 限速规则：20次/2s
      */
     @Test
     public void batchOrder() {
 
         List<PpBatchOrder> list = new LinkedList<>();
-        list.add(new PpBatchOrder("testSwap003", "1", "1", "0", "0.241","0"));
-        list.add(new PpBatchOrder("testSwap004", "1", "2", "0", "0.248","0"));
-        /*list.add(new PpBatchOrder(null, "30", "2", "0", null,"4"));
-        list.add(new PpBatchOrder(null, "30", "1", "0", null,"4"));
-*/
+        list.add(new PpBatchOrder("1026testswap07", "1", "2", "0", "4.51","0"));
+        list.add(new PpBatchOrder("1026testswap08", "1", "2", "0", "4.54","0"));
+
         PpOrders ppOrders = new PpOrders();
-        ppOrders.setInstrument_id("XRP-USDT-SWAP");
+        ppOrders.setInstrument_id("DOT-USDT-SWAP");
         ppOrders.setOrder_data(list);
         String jsonObject = tradeAPIService.orders(ppOrders);
         //ApiOrderResultVO apiOrderResultVO = JSONObject.parseObject(jsonObject, ApiOrderResultVO.class);
         System.out.println("success");
         System.out.println(jsonObject);
-
-
     }
 
     /**
      * 撤单
-     * 撤销之前下的未完成订单。
      * POST /api/swap/v3/cancel_order/<instrument_id>/<order_id> or <client_oid>
-     * 限速规则：40次/2s
      */
     @Test
     public void cancelOrderByOrderId() {
-        String jsonObject = tradeAPIService.cancelOrderByOrderId("XRP-USDT-SWAP", "555275263841845249");
+        String jsonObject = tradeAPIService.cancelOrderByOrderId("DOT-USDT-SWAP", "618617501149466625");
         ApiCancelOrderVO apiCancelOrderVO = JSONObject.parseObject(jsonObject, ApiCancelOrderVO.class);
         System.out.println("success");
         System.out.println(apiCancelOrderVO.getOrder_id());
     }
 
+    /**
+     * 撤单
+     * POST /api/swap/v3/cancel_order/<instrument_id>/<client_oid>
+     */
     @Test
     public void cancelOrderByClientOid() {
-        String jsonObject = tradeAPIService.cancelOrderByClientOid("XRP-USDT-SWAP", "testsawp073102");
+        String jsonObject = tradeAPIService.cancelOrderByClientOid("DOT-USDT-SWAP", "1026testswap03");
         ApiCancelOrderVO apiCancelOrderVO = JSONObject.parseObject(jsonObject, ApiCancelOrderVO.class);
         System.out.println("success");
         System.out.println(apiCancelOrderVO.getOrder_id());
@@ -94,72 +89,84 @@ public class SwapTradeTest extends SwapBaseTest {
 
     /**
      * 批量撤单
-     * 撤销之前下的未完成订单，每个币对可批量撤10个单。
      * POST /api/swap/v3/cancel_batch_orders/<instrument_id>
-     * 限速规则：20次/2s
      */
     @Test
     public void batchCancelOrderByOrderId() {
         //生成一个PpCancelOrderVO对象
         PpCancelOrderVO ppCancelOrderVO = new PpCancelOrderVO();
 
-        ppCancelOrderVO.getIds().add("555291306341613568");
-        ppCancelOrderVO.getIds().add("555291306350002176");
+        ppCancelOrderVO.getIds().add("618619002810961920");
+        ppCancelOrderVO.getIds().add("618619002810961921");
 
         System.out.println(JSONObject.toJSONString(ppCancelOrderVO));
-        String jsonObject = tradeAPIService.cancelOrders("XRP-USDT-SWAP", ppCancelOrderVO);
+        String jsonObject = tradeAPIService.cancelOrdersByOrderIds("DOT-USDT-SWAP", ppCancelOrderVO);
         OrderCancelResult orderCancelResult = JSONObject.parseObject(jsonObject, OrderCancelResult.class);
         System.out.println("success");
         System.out.println(orderCancelResult.getInstrument_id());
     }
 
-
+    /**
+     * 批量撤单
+     * POST /api/swap/v3/cancel_batch_orders/<instrument_id>
+     */
     @Test
     public void batchCancelOrderByClientOid() {
         PpCancelOrderVO ppCancelOrderVO = new PpCancelOrderVO();
         List<String> oidlist = new ArrayList<String>();
 
-        oidlist.add("testSwap003");
-        oidlist.add("testSwap004");
+        oidlist.add("1026testswap07");
+        oidlist.add("1026testswap08");
         ppCancelOrderVO.setClientOids(oidlist);
 
         System.out.println(JSONObject.toJSONString(ppCancelOrderVO));
-        String jsonObject = tradeAPIService.cancelOrders("XRP-USDT-SWAP", ppCancelOrderVO);
+        String jsonObject = tradeAPIService.cancelOrdersByClientOids("DOT-USDT-SWAP", ppCancelOrderVO);
         OrderCancelResult orderCancelResult = JSONObject.parseObject(jsonObject, OrderCancelResult.class);
         System.out.println("success");
         System.out.println(orderCancelResult.getInstrument_id());
     }
-    //修改订单（根据order_id）
+
+    /**
+     * 修改订单(通过order_id)
+     * POST /api/swap/v3/amend_order/<instrument_id>
+     */
     @Test
-    public void testAmendOrder(){
+    public void testAmendOrderByOrderId(){
         AmendOrder amendOrder = new AmendOrder();
         amendOrder.setCancel_on_fail("0");
-        amendOrder.setOrder_id("555275263841845249");
-        amendOrder.setRequest_id("");
-        amendOrder.setNew_price("0.241");
-        amendOrder.setNew_size("1");
+        amendOrder.setOrder_id("618614099317264384");
+        amendOrder.setRequest_id(null);
+        amendOrder.setNew_price("4.52");
+        amendOrder.setNew_size("2");
 
-        String result = tradeAPIService.amendOrder("XRP-USDT-SWAP",amendOrder);
+        String result = tradeAPIService.amendOrderByOrderId("DOT-USDT-SWAP",amendOrder);
         System.out.println("success");
         System.out.println(result);
 
     }
-    //修改订单（根据client_oid）
+
+    /**
+     * 修改订单(通过client_oid)
+     * POST /api/swap/v3/amend_order/<instrument_id>
+     */
     @Test
     public void testAmentOrderByClientOid(){
         AmendOrder amendOrder = new AmendOrder();
         amendOrder.setCancel_on_fail("0");
-        amendOrder.setClient_oid("testsawp073101");
-        amendOrder.setRequest_id("request01");
-        amendOrder.setNew_price("0.242");
-//        amendOrder.setNew_size("1");
+        amendOrder.setClient_oid("1026testswap01");
+        amendOrder.setRequest_id(null);
+        amendOrder.setNew_price("4.53");
+        amendOrder.setNew_size("3");
 
-        String result = tradeAPIService.amendOrderByClientOid("XRP-USDT-SWAP",amendOrder);
+        String result = tradeAPIService.amendOrderByClientOid("DOT-USDT-SWAP",amendOrder);
         System.out.println("success");
         System.out.println(result);
     }
 
-   /* 批量修改订单（根据order_id）*/
+    /**
+     * 批量修改订单(通过order_id)
+     * POST /api/swap/v3/amend_batch_orders/<instrument_id>
+     */
     @Test
     public void testAmentBatchOrderByOrderId(){
         AmendOrderParam amendOrderParam = new AmendOrderParam();
@@ -167,29 +174,31 @@ public class SwapTradeTest extends SwapBaseTest {
 
         AmendOrder amendOrder = new AmendOrder();
         amendOrder.setCancel_on_fail("0");
-        amendOrder.setOrder_id("555291306341613568");
-        amendOrder.setRequest_id("");
-        amendOrder.setNew_price("0.243");
-        amendOrder.setNew_size("1");
+        amendOrder.setOrder_id("618619002810961920");
+        amendOrder.setRequest_id(null);
+        amendOrder.setNew_price("4.54");
+        amendOrder.setNew_size("2");
 
         AmendOrder amendOrder1 = new AmendOrder();
         amendOrder1.setCancel_on_fail("0");
-        amendOrder1.setOrder_id("555291306350002176");
-        amendOrder1.setRequest_id("");
-        amendOrder1.setNew_price("0.289");
-        amendOrder1.setNew_size("1");
+        amendOrder1.setOrder_id("618619002810961921");
+        amendOrder1.setRequest_id(null);
+        amendOrder1.setNew_price("4.51");
+        amendOrder1.setNew_size("3");
 
         list.add(amendOrder);
         list.add(amendOrder1);
         amendOrderParam.setAmend_data(list);
 
-        String result = tradeAPIService.amendBatchOrderByOrderId("XRP-USDT-SWAP",amendOrderParam);
+        String result = tradeAPIService.amendBatchOrderByOrderId("DOT-USDT-SWAP",amendOrderParam);
         System.out.println("success");
         System.out.println(result);
     }
 
-
-    /*批量修改订单（根据client_oid）*/
+    /**
+     * 批量修改订单(通过client_oid)
+     * POST /api/swap/v3/amend_batch_orders/<instrument_id>
+     */
     @Test
     public void testAmentBatchOrderByClientOid(){
         AmendOrderParam amendOrderParam = new AmendOrderParam();
@@ -197,17 +206,17 @@ public class SwapTradeTest extends SwapBaseTest {
 
         AmendOrder amendOrder = new AmendOrder();
         amendOrder.setCancel_on_fail("0");
-        amendOrder.setClient_oid("testSwap001");
-        amendOrder.setRequest_id("");
-        amendOrder.setNew_price("0.24");
-        amendOrder.setNew_size("2");
+        amendOrder.setClient_oid("1026testswap03");
+        amendOrder.setRequest_id(null);
+        amendOrder.setNew_price("4.52");
+        amendOrder.setNew_size("1");
 
         AmendOrder amendOrder1 = new AmendOrder();
         amendOrder1.setCancel_on_fail("0");
-        amendOrder1.setClient_oid("testSwap002");
-        amendOrder1.setRequest_id("");
-        amendOrder1.setNew_price("0.29");
-        amendOrder1.setNew_size("2");
+        amendOrder1.setClient_oid("1026testswap04");
+        amendOrder1.setRequest_id(null);
+        amendOrder1.setNew_price("4.56");
+        amendOrder1.setNew_size("1");
 
 
         list.add(amendOrder);
@@ -215,31 +224,27 @@ public class SwapTradeTest extends SwapBaseTest {
 
         amendOrderParam.setAmend_data(list);
 
-        String result = tradeAPIService.amendBatchOrderByClientOid("XRP-USDT-SWAP",amendOrderParam);
+        String result = tradeAPIService.amendBatchOrderByClientOid("DOT-USDT-SWAP",amendOrderParam);
         System.out.println("success");
         System.out.println(result);
     }
 
-
-
     /**
      * 委托策略下单
-     * 提供止盈止损、跟踪委托、冰山委托和时间加权委托策略
      * POST /api/swap/v3/order_algo
-     * 限速规则：40次/2s
      */
     @Test
     public void testSwapOrderAlgo(){
         SwapOrderParam swapOrderParam=new SwapOrderParam();
         //公共参数
-        swapOrderParam.setInstrument_id("XRP-USDT-SWAP");
+        swapOrderParam.setInstrument_id("DOT-USDT-SWAP");
         swapOrderParam.setType("1");
         swapOrderParam.setOrder_type("1");
         swapOrderParam.setSize("1");
 
-        //止盈止损
-        swapOrderParam.setTrigger_price("0.242");
-        swapOrderParam.setAlgo_price("0.241");
+        //计划委托
+        swapOrderParam.setTrigger_price("4.1");
+        swapOrderParam.setAlgo_price("3.5");
         swapOrderParam.setAlgo_type("1");
 
         //跟踪委托
@@ -258,53 +263,51 @@ public class SwapTradeTest extends SwapBaseTest {
         swapOrderParam.setPrice_limit("");
         swapOrderParam.setTime_interval("");*/
 
+        //止盈止损
+        /*swapOrderParam.setTp_trigger_price("0.26");
+        swapOrderParam.setTp_price("0.255");
+        swapOrderParam.setTp_trigger_type("1");*/
+      /*  swapOrderParam.setSl_trigger_price("11700.2");
+        swapOrderParam.setSl_price("11750.3");
+        swapOrderParam.setSl_trigger_type("1");*/
+
         String jsonObject = tradeAPIService.swapOrderAlgo(swapOrderParam);
-        System.out.println("---------success--------");
         System.out.println(jsonObject);
     }
 
     /**
      * 委托策略撤单
-     * 根据指定的algo_id撤销某个合约的未完成订单，每次最多可撤6（冰山/时间）/10（计划/跟踪）个。
      * POST /api/swap/v3/cancel_algos
-     * 限速规则：20 次/2s
      */
     @Test
     public void testCancelOrderAlgo(){
         CancelOrderAlgo cancelOrderAlgo=new CancelOrderAlgo();
         List<String>  list = new ArrayList<>();
-        list.add("555301223790723072");
-       // list.add("");
+        list.add("618627634680205312");
 
         cancelOrderAlgo.setAlgo_ids(list);
-        cancelOrderAlgo.setInstrument_id("XRP-USDT-SWAP");
+        cancelOrderAlgo.setInstrument_id("DOT-USDT-SWAP");
         cancelOrderAlgo.setOrder_type("1");
 
         String jsonObject = tradeAPIService.cancelOrderAlgo(cancelOrderAlgo);
-        System.out.println("---------success--------");
         System.out.println(jsonObject);
     }
 
     /**
      * 获取委托单列表
-     * 列出您当前所有的订单信息。
      * GET /api/swap/v3/order_algo/<instrument_id>
-     * 限速规则：20次/2s
      */
+
     @Test
     public void testGetSwapAlgOrders(){
-//        System.out.println("begin to show the swapAlgpOrders");
-        String jsonObject = tradeAPIService.getSwapAlgoOrders("XRP-USDT-SWAP",
-                                                            "1",
-                                                            null,"555301223790723072",null,null,null);
+
+        String jsonObject = tradeAPIService.getSwapOrders("DOT-USDT-SWAP", "1", null,"618627634680205312",null,null,"10");
         System.out.println(jsonObject);
     }
 
     /**
      * 市价全平
-     * 市价全平接口，其中BTC合约持仓小于或等于999张时才能调用，否则报错；类似的，其他币种合约的持仓应该小于或等于9999张
      * POST/api/swap/v3/close_position
-     * 限速规则：2次/2s
      */
     @Test
     public void testClosePosition(){
@@ -318,9 +321,7 @@ public class SwapTradeTest extends SwapBaseTest {
 
     /**
      * 撤销所有平仓挂单
-     * 此接口，仅支持撤销平仓的所有挂单。不包括开仓的挂单。
      * POST /api/swap/v3/cancel_all
-     * 限速规则：5次/2s （根据underlying，分别限速）
      */
     @Test
     public void testCancelAll(){
@@ -331,7 +332,5 @@ public class SwapTradeTest extends SwapBaseTest {
         System.out.println(result);
 
     }
-
-
 
 }

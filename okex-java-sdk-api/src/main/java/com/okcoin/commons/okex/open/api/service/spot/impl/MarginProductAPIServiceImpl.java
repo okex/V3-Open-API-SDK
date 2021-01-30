@@ -13,6 +13,7 @@ public class MarginProductAPIServiceImpl implements MarginProductAPIService {
         this.marginProductAPI = this.client.createService(MarginProductAPI.class);
     }
 
+    //公共-获取标记价格
     @Override
     public String getMarginMarkPrice(String instrument_id) {
         return this.client.executeSync(this.marginProductAPI.getMarginMarkPrice(instrument_id));

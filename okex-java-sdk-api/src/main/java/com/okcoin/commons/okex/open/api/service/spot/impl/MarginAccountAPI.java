@@ -13,112 +13,60 @@ import java.util.Map;
  * 杠杆账号测试
  */
 public interface MarginAccountAPI {
-    /**
-     * 全部杠杆资产
-     *
-     * @return
-     */
+
+    //币币杠杆账户信息
     @GET("/api/margin/v3/accounts")
     Call<List<Map<String, Object>>> getAccounts();
 
-    /**
-     * 单个币对杠杆账号资产
-     *
-     * @param instrument_id
-     * @return
-     */
+    //单一币对账户信息
     @GET("/api/margin/v3/accounts/{instrument_id}")
-    Call<Map<String, Object>> getAccountsByProductId(@Path("instrument_id") final String instrument_id);
+    Call<Map<String, Object>> getAccountsByInstrumentId(@Path("instrument_id") final String instrument_id);
 
-    /**
-     * 杠杆账单明细
-     *
-     * @param instrument_id
-     * @param type
-     * @param before
-     * @param after
-     * @param limit
-     * @return
-     */
+    //账单流水查询
     @GET("/api/margin/v3/accounts/{instrument_id}/ledger")
     Call<List<UserMarginBillDto>> getLedger(@Path("instrument_id") final String instrument_id,
-                                            @Query("type") final String type,
-                                            @Query("before") final String before,
                                             @Query("after") final String after,
-                                            @Query("limit") String limit);
+                                            @Query("before") final String before,
+                                            @Query("limit") String limit,
+                                            @Query("type") final String type);
 
-    /**
-     * 全部币对配置
-     *
-     * @return
-     */
+    //杠杆配置信息
     @GET("/api/margin/v3/accounts/availability")
     Call<List<Map<String, Object>>> getAvailability();
 
-    /**
-     * 单个币对配置
-     *
-     * @param instrument_id
-     * @return
-     */
+    //某个杠杆配置信息
     @GET("/api/margin/v3/accounts/{instrument_id}/availability")
-    Call<List<Map<String, Object>>> getAvailabilityByProductId(@Path("instrument_id") final String instrument_id);
+    Call<List<Map<String, Object>>> getAvailabilityByInstrumentId(@Path("instrument_id") final String instrument_id);
 
-    /**
-     * 全部借币历史
-     * @param status
-     * @param before
-     * @param after
-     * @param limit
-     * @return
-     */
+    //获取借币记录
     @GET("/api/margin/v3/accounts/borrowed")
-    Call<List<MarginBorrowOrderDto>> getBorrowedAccounts(
-            @Query("status") final String status,
-            @Query("before") final String before,
-            @Query("after") final String after,
-            @Query("limit") String limit);
+    Call<List<MarginBorrowOrderDto>> getBorrowedAccounts(@Query("status") final String status,
+                                            @Query("after") final String after,
+                                            @Query("before") final String before,
+                                            @Query("limit") String limit);
 
-    /**
-     * 单个币对借币历史
-     * @param status
-     * @param before
-     * @param after
-     * @param limit
-     * @param instrument_id
-     * @return
-     */
+    //某币对借币记录
     @GET("/api/margin/v3/accounts/{instrument_id}/borrowed")
-    Call<List<MarginBorrowOrderDto>> getBorrowedAccountsByProductId(@Path("instrument_id") final String instrument_id,
-                                                                    @Query("before") final String before,
+    Call<List<MarginBorrowOrderDto>> getBorrowedAccountsByInstrumentId(@Path("instrument_id") final String instrument_id,
+                                                                    @Query("status") final String status,
                                                                     @Query("after") final String after,
-                                                                    @Query("limit") final String limit,
-                                                                    @Query("status") final String status);
+                                                                    @Query("before") final String before,
+                                                                    @Query("limit") final String limit);
 
-    /**
-     * 借币
-     *
-     * @param param
-     * @return
-     */
+    //借币
     @POST("/api/margin/v3/accounts/borrow")
-    Call<BorrowResult> borrow_1(@Body BorrowRequestDto param);
+    Call<BorrowResult> borrow(@Body BorrowRequestDto param);
 
-    /**
-     * 还币
-     *
-     * @param param
-     * @return
-     */
+    //还币
     @POST("/api/margin/v3/accounts/repayment")
-    Call<RepaymentResult> repayment_1(@Body RepaymentRequestDto param);
+    Call<RepaymentResult> repayment(@Body RepaymentRequestDto param);
+
+    //获取杠杆倍数
+    @GET("/api/margin/v3/accounts/{instrument_id}/leverage")
+    Call<JSONObject> getLeverage(@Path("instrument_id") String instrument_id);
 
     //设置杠杆倍数
     @POST("/api/margin/v3/accounts/{instrument_id}/leverage")
     Call<JSONObject> setLeverage(@Path("instrument_id") String instrument_id, @Body MarginLeverage marginLeverage);
-
-    //查询杠杆倍数
-    @GET("/api/margin/v3/accounts/{instrument_id}/leverage")
-    Call<JSONObject> getLeverage(@Path("instrument_id") String instrument_id);
 
 }
