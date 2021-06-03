@@ -122,6 +122,7 @@ spot().getOrders(params)	|获取订单列表
 spot().getOrdersPending(params)	|获取所有未成交订单
 spot().getOrder(order_id, params)	|获取订单信息
 spot().getFills(params)  |	获取成交明细
+spot().getTradeFee(instrument_id?:string) 获取当前账户费率
 
 <mark>币币杠杆API</mark>
 
