@@ -15,4 +15,8 @@ public interface WebSocket {
     void sendPing();
 
     boolean checkSum(String data);
+
+    void setProxyHost(String host);
+
+    void setProxyPort(Integer port);
 }
