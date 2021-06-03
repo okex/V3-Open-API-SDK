@@ -205,6 +205,10 @@ export function AuthenticatedClient(
           readonly limit?: string;
         }): Promise<any> {
           return get(`/api/spot/v3/fills?${querystring.stringify(params)}`);
+        },
+        // get trade fee
+        async getTradeFee (instrument_id?: string): Promise<any> {
+          return get(`/api/spot/v3/trade_fee${ instrument_id ? `?instrument_id=${instrument_id}` : '' }`)
         }
       };
     },
