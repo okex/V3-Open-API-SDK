@@ -153,13 +153,14 @@ namespace OKExSDK
         /// <param name="client_oid">由您设置的订单ID来识别您的订单</param>
         /// <param name="match_price">是否以对手价下单(0:不是 1:是)</param>
         /// <returns></returns>
-        public async Task<JObject> makeOrderAsync(string instrument_id, string type, decimal price, int size, string client_oid, string match_price)
+        public async Task<JObject> makeOrderAsync(string instrument_id, string type, string order_type, decimal price, int size, string client_oid, string match_price)
         {
             var url = $"{this.BASEURL}{this.SWAP_SEGMENT}/order";
             var body = new
             {
                 instrument_id = instrument_id,
                 type = type,
+                order_type = order_type,
                 price = price,
                 size = size,
                 client_oid = client_oid,

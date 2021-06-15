@@ -152,18 +152,20 @@ namespace OKExSDK
         /// </summary>
         /// <param name="instrument_id">合约名称，如BTC-USD-SWAP</param>
         /// <param name="type">1:开多2:开空3:平多4:平空</param>
+        /// <param name="order_type">0:普通委托 1:只做Maker 2:FOK 3:IOC 4:市价委托</param>
         /// <param name="price">委托价格</param>
         /// <param name="size">下单数量</param>
         /// <param name="client_oid">由您设置的订单ID来识别您的订单</param>
         /// <param name="match_price">是否以对手价下单(0:不是 1:是)</param>
         /// <returns></returns>
-        public async Task<JObject> makeOrderAsync(string instrument_id, string type, decimal price, int size, string client_oid, string match_price)
+        public async Task<JObject> makeOrderAsync(string instrument_id, string type, string order_type, decimal price, int size, string client_oid, string match_price)
         {
             var url = $"{this.BASEURL}{this.SWAP_SEGMENT}/order";
             var body = new
             {
                 instrument_id = instrument_id,
                 type = type,
+                order_type = order_type,
                 price = price,
                 size = size,
                 client_oid = client_oid,
@@ -187,7 +189,6 @@ namespace OKExSDK
         {
             var url = $"{this.BASEURL}{this.SWAP_SEGMENT}/orders";
             var bodyStr = JsonConvert.SerializeObject(order).Replace("\"[", "[").Replace("]\"", "]").Replace("\\", "");
-            bodyStr = "{\"instrument_id\":\"EOS-USD-SWAP\",\"order_data\":[{\"match_price\":\"0\",\"type\":\"4\",\"price\":\"2.668\",\"size\":\"1\",\"order_type\":\"1\"},{\"match_price\":\"0\",\"type\":\"2\",\"price\":\"2.745\",\"size\":\"2\",\"order_type\":\"1\"},{\"match_price\":\"0\",\"type\":\"2\",\"price\":\"2.745\",\"size\":\"2\",\"order_type\":\"1\"}]}";
             using (var client = new HttpClient(new HttpInterceptor(this._apiKey, this._secret, this._passPhrase, bodyStr)))
             {
                 var res = await client.PostAsync(url, new StringContent(bodyStr, Encoding.UTF8, "application/json"));
