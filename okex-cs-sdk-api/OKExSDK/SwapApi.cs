@@ -148,6 +148,7 @@ namespace OKExSDK
         /// </summary>
         /// <param name="instrument_id">合约名称，如BTC-USD-SWAP</param>
         /// <param name="type">1:开多2:开空3:平多4:平空</param>
+        /// <param name="order_type">0:普通委托 1:只做Maker 2:FOK 3:IOC 4:市价委托</param>
         /// <param name="price">委托价格</param>
         /// <param name="size">下单数量</param>
         /// <param name="client_oid">由您设置的订单ID来识别您的订单</param>
