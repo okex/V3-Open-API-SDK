@@ -27,6 +27,10 @@ namespace OKExSDK.Models.Swap
         /// </summary>
         public string type { get; set; }
         /// <summary>
+        /// 0:普通委托 1:只做Maker 2:FOK 3:IOC 4:市价委托
+        /// </summary>
+        public string order_type { get; set; }
+        /// <summary>
         /// 是否以对手价下单(0:不是 1:是)，默认为0，当取值为1时。price字段无效
         /// </summary>
         public string match_price { get; set; }
