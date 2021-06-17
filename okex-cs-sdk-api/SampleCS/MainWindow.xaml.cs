@@ -2167,6 +2167,7 @@ namespace SampleCS
                 order.client_oid = null;
                 var resResult = await this.swapApi.makeOrderAsync(order.instrument_id,
                     order.type,
+                    order.order_type == null ? "0" : order.order_type,
                     order.price,
                     order.size,
                     order.client_oid,
